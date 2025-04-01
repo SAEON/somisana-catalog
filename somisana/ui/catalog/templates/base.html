@@ -1,0 +1,88 @@
+{% extends 'layout.html' %}
+{% from 'lib.j2' import bootswatch_spacelab_css, jquery_js, leaflet_js, leaflet_css %}
+
+{% block web_title %}
+    SOMISANA
+{% endblock %}
+
+{% block favicon %}
+    <link rel="icon" href="{{ url_for('static', filename='images/mims-icon-32x32.png') }}" sizes="32x32"/>
+    <link rel="icon" href="{{ url_for('static', filename='images/mims-icon-192x192.png') }}" sizes="192x192"/>
+{% endblock %}
+
+{% block header %}
+    <nav class="navbar navbar-expand-lg bg-body-tertiary bg-white shadow-sm sticky-top">
+        <div class="container-fluid justify-content-center">
+            <img src="{{ url_for('.static', filename='/images/egagasini-logo.png') }}" height="55">
+            <div class="d-flex flex-column mims-logo-color fs-5 mx-4 mt-2">
+                <span class="fw-semibold">SOMISANA</span>
+                <span class="">Sustainable Ocean Modelling Initiative: a South African approach</span>
+            </div>
+{#            {{ nav_bar_items( current_user, marine_survey_types ) }}#}
+        </div>
+    </nav>
+{% endblock %}
+
+{% block footer %}
+    <footer class="text-white">
+        <div class="mims-bg-color-light">
+            <div class="d-flex flex-column flex-lg-row justify-content-center justify-content-md-between align-items-center py-4 flex-wrap">
+                <div class="pt-3 d-flex flex-column">
+                    <p class="text-center" style="max-width: 350px">
+                        SOMISANA is managed by the National
+                        <a href="https://ocims.environment.gov.za/" target="_blank" class="text-decoration-none">
+                            Oceans and Coasts Information Management System
+                        </a>
+                        (OCIMS).
+                    </p>
+                </div>
+                <div class="centered-ocims">
+                    <a href="https://ocims.environment.gov.za/" target="_blank">
+                        <img src="{{ url_for('static', filename='images/ocims-logo.png') }}">
+                    </a>
+                </div>
+                <div class="px-2">
+                    <p class="mt-4 text-center">
+                        Copyright &copy;
+                        <script>document.write(new Date().getFullYear())</script>
+                        <a href="https://www.dffe.gov.za/" target="_blank" class="text-decoration-none text-white">
+                            Department of Forestry, Fisheries and the Environment
+                        </a>
+                    <br>
+                        SOMISANA: {{ config.SOMISANA_VERSION }}
+                    <br>
+                        Photo by <a class="text-decoration-underline text-white"
+                                    href="https://unsplash.com/@zakharyak?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Maksym
+                        Zakharyak</a> on <a class="text-decoration-underline text-white"
+                                            href="https://unsplash.com/photos/a-person-riding-a-surfboard-on-a-wave-in-the-ocean-0V39-QUxaic?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    {{ bootswatch_spacelab_css() }}
+    {{ leaflet_css() }}
+    <style>
+        :root {
+            --bs-link-color: #3E8A93;
+            --home-background-url: url( {{ url_for('.static', filename='images/maksym-zakharyak-0V39-QUxaic-unsplash.jpg') }} );
+            --bs-border-radius: 0.2em;
+        }
+    </style>
+
+    <link rel="stylesheet" href="{{ url_for('.static', filename='styles/surveys.css') }}">
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {{ jquery_js() }}
+    {{ leaflet_js() }}
+    <script src="{{ url_for('static', filename='scripts/catalog.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/controls.js') }}"></script>
+    <script src="{{ url_for('.static', filename='scripts/surveys.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/leaflet-providers.js') }}"></script>
+{% endblock %}

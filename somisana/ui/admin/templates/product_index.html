@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% from 'admin.j2' import data_table %}
+
+{% block web_title %}
+    SOMISANA - Products
+{% endblock %}
+
+{% block main %}
+    <main class="flex-grow-1 m-3">
+        <div class="container-xl" style="max-width: 800px">
+            <div class="row mb-5">
+                <div class="bg-white-op rounded p-4">
+                    <h1>Products</h1>
+                    {{ data_table(
+                            all_products,
+                            {'id': 'ID', 'title': 'Title', 'description': 'Description', 'doi': 'DOI'},
+                            url_key='id',
+                            url_param='product_id',
+                            url='product.detail'
+                        ) }}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+

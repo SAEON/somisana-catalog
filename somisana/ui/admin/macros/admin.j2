@@ -1,0 +1,55 @@
+{% macro nav_bar_items(
+    current_user
+) %}
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor04"
+            aria-controls="navbarColor04" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor04">
+        <ul class="navbar-nav" style="margin-left: auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('home.index') }}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('product.index') }}">Product</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('simulation.index') }}">Simulation</a>
+            </li>
+            {#            {{ login_nav_item( current_user ) }}#}
+        </ul>
+    </div>
+{% endmacro %}
+
+{% macro data_table(
+    json_data,
+    key_map,
+    url_key='id',
+    url_param='id',
+    url='.index'
+) %}
+    <table class="table">
+        <thead>
+        <tr>
+            {% for key, label in key_map.items() %}
+                <th>{{ label }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in json_data %}
+            <tr>
+                {% for key in key_map.keys() %}
+                    {% if key == url_key %}
+                        <td>
+                            <a href="{{ url_for(url, **{url_param: item[key]}) }}">{{ item[key] }}</a>
+                        </td>
+                    {% else %}
+                        <td>{{ item[key] }}</td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% from 'admin.j2' import data_table %}
+
+{% block web_title %}
+    SOMISANA - Product Detail
+{% endblock %}
+
+{% block main %}
+    <main class="flex-grow-1 m-3">
+        <div class="container-xl" style="max-width: 800px">
+            <div class="row mb-5">
+                <div class="bg-white-op rounded p-4">
+                    <h1>Product Detail</h1>
+                    {{ product }}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
