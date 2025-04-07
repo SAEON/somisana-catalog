@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% from 'admin.j2' import data_table %}
+{% from 'content.j2' import render_info, render_buttons %}
 
 {% block web_title %}
     SOMISANA - Product Detail
@@ -11,7 +12,30 @@
             <div class="row mb-5">
                 <div class="bg-white-op rounded p-4">
                     <h1>Product Detail</h1>
-                    {{ product }}
+                     {% if product %}
+                        <a href="{{ url_for('resource.product_resources', product_id=product.id) }}">Resources</a>
+                    {% endif %}
+                    {% call(prop) render_info(product, 'Tite', 'Description', 'DOI', 'North Bound', 'South Bound', 'East Bound',
+                            'West Bound', 'Simulations') %}
+                        {% if prop == 'Tite' %}
+                            {{ product.title }}
+                        {% elif prop == 'Description' %}
+                            {{ product.description }}
+                        {% elif prop == 'DOI' %}
+                            {{ product.doi }}
+                        {% elif prop == 'North Bound' %}
+                            {{ product.north_bound }}
+                        {% elif prop == 'South Bound' %}
+                            {{ product.south_bound }}
+                        {% elif prop == 'East Bound' %}
+                            {{ product.east_bound }}
+                        {% elif prop == 'West Bound' %}
+                            {{ product.west_bound }}
+                        {% elif prop == 'Simulations' %}
+                            {{ product.simulations | sort(attribute='title') | map(attribute='title') | join('<br/>') | safe }}
+                        {% endif %}
+                    {% endcall %}
+                    {{ render_buttons(buttons) }}
                 </div>
             </div>
         </div>

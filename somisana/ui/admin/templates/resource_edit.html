@@ -2,7 +2,7 @@
 {% from 'forms.j2' import render_form %}
 
 {% block web_title %}
-    SOMISANA - Products
+    SOMISANA - Product Resource
 {% endblock %}
 
 {% block main %}
@@ -10,11 +10,8 @@
         <div class="container-xl">
             <div class="row mb-5">
                 <div class="bg-white-op rounded p-4">
-                    <h1>Product</h1>
-                    {% if product %}
-                        <a href="{{ url_for('resource.product_resources', product_id=product.id) }}">Resources</a>
-                    {% endif %}
-                    {{ render_form(form, product, ['simulations']) }}
+                    <h1>Resource</h1>
+                    {{ resource }}
                 </div>
             </div>
         </div>

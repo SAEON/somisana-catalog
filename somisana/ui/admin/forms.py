@@ -1,9 +1,17 @@
+from wtforms import FloatField, SelectField, StringField, FormField, FieldList, URLField, SubmitField
+from wtforms.validators import data_required, url
+
 from odp.ui.base.forms import BaseForm
-
-from wtforms import BooleanField, FloatField, SelectField, StringField, DateField
-from wtforms.validators import optional, data_required
-
 from odp.ui.base.forms.fields import MultiCheckboxField
+from somisana.const import ResourceType
+
+
+class UrlResourceForm(BaseForm):
+    url = URLField("Resource URL", validators=[data_required(), url()])
+    resource_type = SelectField(
+        "Resource Type",
+        choices=[(type.value, type.name.replace('_', ' ').title()) for type in ResourceType]
+    )
 
 
 class ProductForm(BaseForm):
