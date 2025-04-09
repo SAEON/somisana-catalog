@@ -11,13 +11,15 @@
             <div class="row mb-5">
                 <div class="bg-white-op rounded p-4">
                     <h1>Products</h1>
-                    {{ data_table(
+                    <div class="mt-5">
+                        {{ data_table(
                             all_products,
                             {'id': 'ID', 'title': 'Title', 'description': 'Description', 'doi': 'DOI'},
                             url_key='id',
                             url_param='id',
                             url='.detail'
                         ) }}
+                    </div>
                 </div>
             </div>
         </div>

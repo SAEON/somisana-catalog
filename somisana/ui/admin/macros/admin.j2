@@ -39,19 +39,27 @@
         </tr>
         </thead>
         <tbody>
-        {% for item in json_data %}
+        {% if not json_data|length > 0 %}
             <tr>
-                {% for key in key_map.keys() %}
-                    {% if key == url_key %}
-                        <td>
-                            <a href="{{ url_for(url, **{url_param: item[key]}) }}">{{ item[key] }}</a>
-                        </td>
-                    {% else %}
-                        <td>{{ item[key] }}</td>
-                    {% endif %}
-                {% endfor %}
+                <td class="text-center" colspan="{{ key_map.items()|length }}">
+                    No results found
+                </td>
             </tr>
-        {% endfor %}
+        {% else %}
+            {% for item in json_data %}
+                <tr>
+                    {% for key in key_map.keys() %}
+                        {% if key == url_key %}
+                            <td>
+                                <a href="{{ url_for(url, **{url_param: item[key]}) }}">{{ item[key] }}</a>
+                            </td>
+                        {% else %}
+                            <td>{{ item[key] }}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        {% endif %}
         </tbody>
     </table>
 {% endmacro %}

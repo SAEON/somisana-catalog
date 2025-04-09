@@ -5,11 +5,8 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 from odp.lib.client import ODPAPIError
 from odp.ui.base import api
+from odp.ui.base.templates import delete_btn, edit_btn
 from somisana.ui.admin.forms import ProductForm
-
-from odp.ui.base.templates import create_btn, delete_btn, edit_btn
-
-from somisana.const import ResourceReferenceType
 
 bp = Blueprint(
     'product',
@@ -118,7 +115,7 @@ def edit(id):
 @bp.route('/<id>/delete', methods=('POST',))
 def delete(id):
     requests.delete(f'http://localhost:2020/product/{id}')
-    flash(f'Client {id} has been deleted.', category='success')
+    flash(f'Product {id} has been deleted.', category='success')
     return redirect(url_for('.index'))
 
 

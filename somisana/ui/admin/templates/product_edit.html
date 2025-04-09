@@ -11,10 +11,12 @@
             <div class="row mb-5">
                 <div class="bg-white-op rounded p-4">
                     <h1>Product</h1>
-                    {% if product %}
-                        <a href="{{ url_for('resource.product_resources', product_id=product.id) }}">Resources</a>
-                    {% endif %}
-                    {{ render_form(form, product, ['simulations']) }}
+                    <div class="mt-5">
+                        {% if product %}
+                            <a href="{{ url_for('resource.product_resources', product_id=product.id) }}">Resources</a>
+                        {% endif %}
+                        {{ render_form(form, product, ['simulations']) }}
+                    </div>
                 </div>
             </div>
         </div>

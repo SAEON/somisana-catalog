@@ -10,8 +10,15 @@
         <div class="container-xl">
             <div class="row mb-5">
                 <div class="bg-white-op rounded p-4">
+                    {% set submit_target = url_for('.edit', id=resource.id) if resource else url_for('.create', product_id=product_id) %}
+                    {% set cancel_target = url_for('.detail', id=resource.id) if resource else url_for('.product_resources', product_id=product_id) %}
                     <h1>Resource</h1>
-                    {{ resource }}
+                    {{ render_form(
+                        form,
+                        obj=resource,
+                        submit_target=submit_target,
+                        cancel_target=cancel_target
+                        ) }}
                 </div>
             </div>
         </div>

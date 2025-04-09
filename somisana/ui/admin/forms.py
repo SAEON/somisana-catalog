@@ -7,7 +7,7 @@ from somisana.const import ResourceType
 
 
 class UrlResourceForm(BaseForm):
-    url = URLField("Resource URL", validators=[data_required(), url()])
+    reference = URLField("Resource URL", validators=[data_required(), url()])
     resource_type = SelectField(
         "Resource Type",
         choices=[(type.value, type.name.replace('_', ' ').title()) for type in ResourceType]

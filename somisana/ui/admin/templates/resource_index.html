@@ -10,17 +10,20 @@
         <div class="container-xl" style="max-width: 800px">
             <div class="row mb-5">
                 <div class="bg-white-op rounded p-4">
-                    <h1>Product Resources</h1>
-                    {{ data_table(
+                    <h1>Resources for: <small class="text-body-secondary">{{ product_title }}</small></h1>
+                    <div class="mt-5">
+                        {{ data_table(
                             resources,
                             {'id': 'ID', 'reference': 'Reference', 'reference_type': 'Reference Type', 'resource_type': 'Resource Type'},
                             url_key='id',
-                            url_param='resource_id',
-                            url='product.resource_edit'
+                            url_param='id',
+                            url='.detail'
                         ) }}
-                    {% if product_id %}
-
-                    {% endif %}
+                        {% if product_id %}
+                            <a class="btn btn-outline-primary btn-action "
+                               href="{{ url_for('.create', product_id=product_id) }}">Add</a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
