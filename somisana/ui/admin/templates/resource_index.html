@@ -19,10 +19,13 @@
                             url_param='id',
                             url='.detail'
                         ) }}
-                        {% if product_id %}
-                            <a class="btn btn-outline-primary btn-action "
-                               href="{{ url_for('.create', product_id=product_id) }}">Add</a>
-                        {% endif %}
+                        <div class="d-flex flex-row-reverse">
+                            {% if product_id %}
+                                <a class="btn btn-outline-primary btn-action "
+                                   href="{{ url_for('.create', product_id=product_id) }}">Add
+                                </a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>

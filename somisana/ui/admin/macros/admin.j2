@@ -63,3 +63,19 @@
         </tbody>
     </table>
 {% endmacro %}
+
+{% macro render_button(
+    btn_label,
+    endpoint,
+    params,
+    btn_class,
+    disabled=False,
+    prompt=""
+)%}
+    <form action="{{ url_for(endpoint, **params) }}" method="post">
+        <button type="submit" class="{{ btn_class }}" {{ 'disabled' if disabled }}
+                onclick="return confirm('{{ prompt % prompt_args }}')">
+            {{ btn_label }}
+        </button>
+    </form>
+{% endmacro %}

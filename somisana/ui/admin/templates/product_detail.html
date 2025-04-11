@@ -13,11 +13,8 @@
                 <div class="bg-white-op rounded p-4">
                     <h1>Product Detail</h1>
                     <div class="mt-5">
-                        {% if product %}
-                            <a href="{{ url_for('resource.product_resources', product_id=product.id) }}">Resources</a>
-                        {% endif %}
                         {% call(prop) render_info(product, 'Tite', 'Description', 'DOI', 'North Bound', 'South Bound', 'East Bound',
-                            'West Bound', 'Simulations') %}
+                            'West Bound', 'Simulations', 'Resources') %}
                             {% if prop == 'Tite' %}
                                 {{ product.title }}
                             {% elif prop == 'Description' %}
@@ -34,6 +31,9 @@
                                 {{ product.west_bound }}
                             {% elif prop == 'Simulations' %}
                                 {{ product.simulations | sort(attribute='title') | map(attribute='title') | join('<br/>') | safe }}
+                            {% elif prop == 'Resources' %}
+                                <a href="{{ url_for('resource.product_resources', product_id=product.id) }}">View
+                                    Resources</a>
                             {% endif %}
                         {% endcall %}
                         {{ render_buttons(buttons) }}

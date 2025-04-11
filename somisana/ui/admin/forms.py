@@ -1,5 +1,5 @@
-from wtforms import FloatField, SelectField, StringField, FormField, FieldList, URLField, SubmitField
-from wtforms.validators import data_required, url
+from wtforms import FloatField, SelectField, StringField, URLField, FileField
+from wtforms.validators import data_required, url, optional
 
 from odp.ui.base.forms import BaseForm
 from odp.ui.base.forms.fields import MultiCheckboxField
@@ -12,6 +12,36 @@ class UrlResourceForm(BaseForm):
         "Resource Type",
         choices=[(type.value, type.name.replace('_', ' ').title()) for type in ResourceType]
     )
+
+
+class ResourceForm(BaseForm):
+    reference = URLField("Resource URL", validators=[optional(), url()])
+    file = FileField("Upload File", validators=[optional()])
+    resource_type = SelectField(
+        "Resource Type",
+        choices=[(type.value, type.name.replace('_', ' ').title()) for type in ResourceType]
+    )
+
+    def validate(self):
+        if not super().validate():
+            return False
+
+        has_reference = bool(self.reference.data and self.reference.data.strip())
+        has_file = bool(self.file.data and hasattr(self.file.data, 'filename') and self.file.data.filename)
+
+        if has_reference and has_file:
+            msg = "Please provide either a URL or a file, not both."
+            self.reference.errors.append(msg)
+            self.file.errors.append(msg)
+            return False
+
+        if not has_reference and not has_file:
+            msg = "You must provide either a URL or upload a file."
+            self.reference.errors.append(msg)
+            self.file.errors.append(msg)
+            return False
+
+        return True
 
 
 class ProductForm(BaseForm):
