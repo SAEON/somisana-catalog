@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'admin.html' %}
 {% from 'admin.j2' import data_table %}
 {% from 'content.j2' import render_buttons %}
 
@@ -6,28 +6,21 @@
     SOMISANA - Simulations
 {% endblock %}
 
-{% block main %}
-    <main class="flex-grow-1 m-3">
-        <div class="container-xl" style="max-width: 800px">
-            <div class="row mb-5">
-                <div class="bg-white-op rounded p-4">
-                    <h1>Simulations</h1>
-                    <div class="mt-5">
-                        {{ data_table(
-                            all_simulations,
-                            {'id': 'ID',
-                            'title': 'Title',
-                            'folder_path': 'Folder Path',
-                            'data_access_url': 'Data Access URL'},
-                            url_key='id',
-                            url_param='id',
-                            url='.detail'
-                        ) }}
-                        {{ render_buttons(buttons) }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+{% block heading %}
+    Simulations
+{% endblock %}
+
+{% block content %}
+    {{ data_table(
+        all_simulations,
+        {'id': 'ID',
+        'title': 'Title',
+        'folder_path': 'Folder Path',
+        'data_access_url': 'Data Access URL'},
+        url_key='id',
+        url_param='id',
+        url='.detail'
+    ) }}
+    {{ render_buttons(buttons) }}
 {% endblock %}
 

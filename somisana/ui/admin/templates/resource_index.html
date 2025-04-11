@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'admin.html' %}
 {% from 'admin.j2' import data_table %}
 {% from 'content.j2' import render_buttons %}
 
@@ -6,27 +6,20 @@
     SOMISANA - Product Resources
 {% endblock %}
 
-{% block main %}
-    <main class="flex-grow-1 m-3">
-        <div class="container-xl" style="max-width: 800px">
-            <div class="row mb-5">
-                <div class="bg-white-op rounded p-4">
-                    <h1>Resources for: <small class="text-body-secondary">{{ product_title }}</small></h1>
-                    <div class="mt-5">
-                        {{ data_table(
-                            resources,
-                            {'id': 'ID', 'reference': 'Reference', 'reference_type': 'Reference Type', 'resource_type': 'Resource Type'},
-                            url_key='id',
-                            url_param='id',
-                            url='.detail'
-                        ) }}
-                        {% if product_id %}
-                            {{ render_buttons(buttons) }}
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+{% block heading %}
+    Resources for: <small class="text-body-secondary">{{ product_title }}</small>
+{% endblock %}
+
+{% block content %}
+    {{ data_table(
+        resources,
+        {'id': 'ID', 'reference': 'Reference', 'reference_type': 'Reference Type', 'resource_type': 'Resource Type'},
+        url_key='id',
+        url_param='id',
+        url='.detail'
+    ) }}
+    {% if product_id %}
+        {{ render_buttons(buttons) }}
+    {% endif %}
 {% endblock %}
 

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'admin.html' %}
 {% from 'admin.j2' import data_table %}
 {% from 'content.j2' import render_info, render_buttons %}
 
@@ -6,27 +6,20 @@
     SOMISANA - Simulation Detail
 {% endblock %}
 
-{% block main %}
-    <main class="flex-grow-1 m-3">
-        <div class="container-xl" style="max-width: 800px">
-            <div class="row mb-5">
-                <div class="bg-white-op rounded p-4">
-                    <h1>Simulation Detail</h1>
-                    <div class="mt-5">
-                        {% call(prop) render_info(simulation, 'Tite', 'Folder Path', 'Data Access URL') %}
-                            {% if prop == 'Tite' %}
-                                {{ simulation.title }}
-                            {% elif prop == 'Folder Path' %}
-                                {{ simulation.folder_path }}
-                            {% elif prop == 'Data Access URL' %}
-                                {{ simulation.data_access_url }}
-                            {% endif %}
-                        {% endcall %}
-                        {{ render_buttons(buttons) }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+{% block heading %}
+    Simulation Detail
+{% endblock %}
+
+{% block content %}
+    {% call(prop) render_info(simulation, 'Tite', 'Folder Path', 'Data Access URL') %}
+        {% if prop == 'Tite' %}
+            {{ simulation.title }}
+        {% elif prop == 'Folder Path' %}
+            {{ simulation.folder_path }}
+        {% elif prop == 'Data Access URL' %}
+            {{ simulation.data_access_url }}
+        {% endif %}
+    {% endcall %}
+    {{ render_buttons(buttons) }}
 {% endblock %}
 

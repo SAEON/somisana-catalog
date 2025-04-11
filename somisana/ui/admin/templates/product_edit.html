@@ -1,25 +1,18 @@
-{% extends 'base.html' %}
+{% extends 'admin.html' %}
 {% from 'forms.j2' import render_form %}
 
 {% block web_title %}
     SOMISANA - Products
 {% endblock %}
 
-{% block main %}
-    <main class="flex-grow-1 m-3">
-        <div class="container-xl">
-            <div class="row mb-5">
-                <div class="bg-white-op rounded p-4">
-                    <h1>Product</h1>
-                    <div class="mt-5">
-                        {% if product %}
-                            <a href="{{ url_for('resource.product_resources', product_id=product.id) }}">Resources</a>
-                        {% endif %}
-                        {{ render_form(form, product, ['simulations']) }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+{% block heading %}
+    Product Edit
+{% endblock %}
+
+{% block content %}
+    {% if product %}
+        <a href="{{ url_for('resource.product_resources', product_id=product.id) }}">Resources</a>
+    {% endif %}
+    {{ render_form(form, product, ['simulations']) }}
 {% endblock %}
 

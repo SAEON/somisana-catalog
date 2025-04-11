@@ -1,22 +1,15 @@
-{% extends 'base.html' %}
+{% extends 'admin.html' %}
 {% from 'forms.j2' import render_form %}
 
 {% block web_title %}
-    SOMISANA - Simulation
+    SOMISANA - Simulation Edit
 {% endblock %}
 
-{% block main %}
-    <main class="flex-grow-1 m-3">
-        <div class="container-xl">
-            <div class="row mb-5">
-                <div class="bg-white-op rounded p-4">
-                    <h1>Product</h1>
-                    <div class="mt-5">
-                        {{ render_form(form, simulation) }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+{% block heading %}
+    Simulation Edit
+{% endblock %}
+
+{% block content %}
+    {{ render_form(form, simulation) }}
 {% endblock %}
 
