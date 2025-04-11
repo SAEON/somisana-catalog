@@ -5,7 +5,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 from odp.lib.client import ODPAPIError
 from odp.ui.base import api
-from odp.ui.base.templates import delete_btn, edit_btn
+from odp.ui.base.templates import delete_btn, edit_btn, create_btn
 from somisana.ui.admin.forms import ProductForm
 
 bp = Blueprint(
@@ -21,7 +21,13 @@ def index():
     result = requests.get('http://localhost:2020/product/all_products')
     all_products = result.json()
 
-    return render_template('product_index.html', all_products=all_products)
+    return render_template(
+        'product_index.html',
+        all_products=all_products,
+        buttons=[
+            create_btn()
+        ]
+    )
 
 
 @bp.route('/<id>')
@@ -44,7 +50,7 @@ def create():
     form = ProductForm(request.form)
     populate_simulation_choices(form.simulations)
 
-    if "submit" in request.form and form.validate():
+    if request.method == 'POST' and form.validate():
         try:
             response = requests.post(
                 url='http://localhost:2020/product/',
@@ -61,7 +67,7 @@ def create():
             )
             new_product_id = response.json()
             flash(f'Product {new_product_id} has been created.', category='success')
-            return redirect(url_for('.detail', product_id=new_product_id))
+            return redirect(url_for('.detail', id=new_product_id))
 
         except ODPAPIError as e:
             if response := api.handle_error(e):
@@ -78,8 +84,6 @@ def edit(id):
     # Change simulation objects into array of just id's for multichecklist
     product['simulations'] = [simulation['id'] for simulation in product['simulations']]
 
-    # separate get/post form instantiation to resolve
-    # ambiguity of missing vs empty multiselect field
     if request.method == 'POST':
         form = ProductForm(request.form)
     else:

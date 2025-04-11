@@ -5,7 +5,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 from odp.lib.client import ODPAPIError
 from odp.ui.base import api
-from odp.ui.base.templates import delete_btn
+from odp.ui.base.templates import delete_btn, create_btn
 from somisana.ui.admin.forms import ResourceForm
 
 bp = Blueprint(
@@ -28,7 +28,14 @@ def product_resources(product_id):
         'resource_index.html',
         resources=all_product_resources,
         product_id=product_id,
-        product_title=product_result['title']
+        product_title=product_result['title'],
+        buttons=[
+            create_btn(
+                endpoint_params=dict(
+                    product_id=product_id
+                )
+            )
+        ]
     )
 
 

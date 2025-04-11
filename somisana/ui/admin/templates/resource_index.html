@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% from 'admin.j2' import data_table %}
+{% from 'content.j2' import render_buttons %}
 
 {% block web_title %}
     SOMISANA - Product Resources
@@ -19,13 +20,9 @@
                             url_param='id',
                             url='.detail'
                         ) }}
-                        <div class="d-flex flex-row-reverse">
-                            {% if product_id %}
-                                <a class="btn btn-outline-primary btn-action "
-                                   href="{{ url_for('.create', product_id=product_id) }}">Add
-                                </a>
-                            {% endif %}
-                        </div>
+                        {% if product_id %}
+                            {{ render_buttons(buttons) }}
+                        {% endif %}
                     </div>
                 </div>
             </div>

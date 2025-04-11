@@ -32,8 +32,9 @@
                             {% elif prop == 'Simulations' %}
                                 {{ product.simulations | sort(attribute='title') | map(attribute='title') | join('<br/>') | safe }}
                             {% elif prop == 'Resources' %}
-                                <a href="{{ url_for('resource.product_resources', product_id=product.id) }}">View
-                                    Resources</a>
+                                <a href="{{ url_for('resource.product_resources', product_id=product.id) }}">
+                                    View/Add Resources
+                                </a>
                             {% endif %}
                         {% endcall %}
                         {{ render_buttons(buttons) }}

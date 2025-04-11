@@ -54,7 +54,7 @@
                                 <a href="{{ url_for(url, **{url_param: item[key]}) }}">{{ item[key] }}</a>
                             </td>
                         {% else %}
-                            <td>{{ item[key] }}</td>
+                            <td>{{ item[key] | truncate(60) }}</td>
                         {% endif %}
                     {% endfor %}
                 </tr>

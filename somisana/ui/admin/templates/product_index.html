@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% from 'admin.j2' import data_table %}
+{% from 'content.j2' import render_buttons %}
 
 {% block web_title %}
     SOMISANA - Products
@@ -19,6 +20,7 @@
                             url_param='id',
                             url='.detail'
                         ) }}
+                        {{ render_buttons(buttons) }}
                     </div>
                 </div>
             </div>
