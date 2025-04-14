@@ -3,9 +3,10 @@ import requests
 
 from odp.ui.base.templates import delete_btn, edit_btn, create_btn
 from odp.lib.client import ODPAPIError
-from odp.ui.base import api
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from somisana.ui.admin.forms import SimulationForm
+from odp.ui.base import api
+from somisana.const import SOMISANAScope
 
 bp = Blueprint(
     'simulation',
@@ -16,9 +17,9 @@ bp = Blueprint(
 
 
 @bp.route('/')
+@api.view(SOMISANAScope.SIMULATION_READ)
 def index():
-    result = requests.get('http://localhost:2020/simulation/all')
-    all_simulations = result.json()
+    all_simulations = api.get('/simulation/all')
 
     return render_template(
         'simulation_index.html',
@@ -30,35 +31,35 @@ def index():
 
 
 @bp.route('/<id>')
+@api.view(SOMISANAScope.SIMULATION_READ)
 def detail(id):
-    result = requests.get(f'http://localhost:2020/simulation/{id}')
-    result = result.json()
+    simulation = api.get(f'/simulation/{id}')
 
     return render_template(
         'simulation_detail.html',
-        simulation=result,
+        simulation=simulation,
         buttons=[
             edit_btn(object_id=id),
-            delete_btn(object_id=id, prompt_args=(result['title'],))
+            delete_btn(object_id=id, prompt_args=(simulation['title'],))
         ]
     )
 
 
 @bp.route('/new', methods=('GET', 'POST'))
+@api.view(SOMISANAScope.SIMULATION_ADMIN)
 def create():
     form = SimulationForm(request.form)
 
     if request.method == 'POST' and form.validate():
         try:
-            response = requests.post(
-                url='http://localhost:2020/simulation/',
-                json=dict(
+            new_simulation_id = api.post(
+                path='/simulation/',
+                data=dict(
                     title=form.title.data,
                     folder_path=form.folder_path.data,
                     data_access_url=form.data_access_url.data,
                 )
             )
-            new_simulation_id = response.json()
             flash(f'Product {new_simulation_id} has been created.', category='success')
             return redirect(url_for('.detail', id=new_simulation_id))
 
@@ -70,9 +71,9 @@ def create():
 
 
 @bp.route('/<id>/edit', methods=('GET', 'POST'))
+@api.view(SOMISANAScope.SIMULATION_ADMIN)
 def edit(id):
-    result = requests.get(f'http://localhost:2020/simulation/{id}')
-    simulation = result.json()
+    simulation = api.get(f'/simulation/{id}')
 
     # separate get/post form instantiation to resolve
     if request.method == 'POST':
@@ -82,9 +83,9 @@ def edit(id):
 
     if request.method == 'POST' and form.validate():
         try:
-            requests.put(
-                url=f'http://localhost:2020/simulation/{id}',
-                json=dict(
+            api.put(
+                path=f'/simulation/{id}',
+                data=dict(
                     title=form.title.data,
                     folder_path=form.folder_path.data,
                     data_access_url=form.data_access_url.data,
@@ -101,7 +102,8 @@ def edit(id):
 
 
 @bp.route('/<id>/delete', methods=('POST',))
+@api.view(SOMISANAScope.SIMULATION_ADMIN)
 def delete(id):
-    requests.delete(f'http://localhost:2020/product/{id}')
+    api.delete(f'/product/{id}')
     flash(f'Product {id} has been deleted.', category='success')
     return redirect(url_for('.index'))

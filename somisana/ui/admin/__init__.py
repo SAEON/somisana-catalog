@@ -22,28 +22,13 @@ def create_app():
         UI_CLIENT_SCOPE=[
             HydraScope.OPENID,
             HydraScope.OFFLINE_ACCESS,
-            # SADCOScope.HYDRO_DOWNLOAD,
-            # SADCOScope.CURRENTS_DOWNLOAD,
-            # SADCOScope.WEATHER_DOWNLOAD,
-            # SADCOScope.WAVES_DOWNLOAD,
-            # SADCOScope.UTR_DOWNLOAD,
-            # SADCOScope.VOS_DOWNLOAD,
-            # SADCOScope.DOWNLOAD_READ,
-            # SADCOScope.DOWNLOAD_ADMIN,
+            SOMISANAScope.PRODUCT_ADMIN,
+            SOMISANAScope.PRODUCT_READ,
+            SOMISANAScope.RESOURCE_ADMIN,
+            SOMISANAScope.RESOURCE_READ,
+            SOMISANAScope.SIMULATION_ADMIN,
+            SOMISANAScope.SIMULATION_READ,
             ODPScope.TOKEN_READ
-        ],
-        CI_CLIENT_ID=somisana_config.SOMISANA.ADMIN.CI_CLIENT_ID,
-        CI_CLIENT_SECRET=somisana_config.SOMISANA.ADMIN.CI_CLIENT_SECRET,
-        CI_CLIENT_SCOPE=[
-            # SADCOScope.SURVEYS_READ,
-            # SADCOScope.HYDRO_READ,
-            # SADCOScope.CURRENTS_READ,
-            # SADCOScope.WEATHER_READ,
-            # SADCOScope.WAVES_READ,
-            # SADCOScope.UTR_READ,
-            # SADCOScope.ECHO_SOUNDING_READ,
-            # SADCOScope.UNKNOWN_READ,
-            # SADCOScope.VOS_READ
         ],
         SECRET_KEY=somisana_config.SOMISANA.ADMIN.FLASK_SECRET,
         CATALOG_TERMS_OF_USE='''
@@ -55,7 +40,7 @@ def create_app():
         SOMISANA_VERSION=VERSION
     )
 
-    base.init_app(app, user_api=True, client_api=True, template_dir=Path(__file__).parent / 'templates',
+    base.init_app(app, user_api=True, template_dir=Path(__file__).parent / 'templates',
                   macro_dir=Path(__file__).parent / 'macros', api_url=somisana_config.SOMISANA.API_URL)
 
     views.init_app(app)

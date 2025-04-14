@@ -1,11 +1,11 @@
 from pathlib import Path
 
-import requests
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 from odp.lib.client import ODPAPIError
 from odp.ui.base import api
 from odp.ui.base.templates import delete_btn, create_btn
+from somisana.const import SOMISANAScope
 from somisana.ui.admin.forms import ResourceForm
 
 bp = Blueprint(
@@ -17,18 +17,17 @@ bp = Blueprint(
 
 
 @bp.route('/product_resources/<product_id>/')
+@api.view(SOMISANAScope.RESOURCE_READ)
 def product_resources(product_id):
-    resource_results = requests.get(f'http://localhost:2020/resource/product_resources/{product_id}')
-    all_product_resources = resource_results.json()
+    all_product_resources = api.get(f'/resource/product_resources/{product_id}')
 
-    product_result = requests.get(f'http://localhost:2020/product/{product_id}')
-    product_result = product_result.json()
+    product = api.get(f'/product/{product_id}')
 
     return render_template(
         'resource_index.html',
         resources=all_product_resources,
         product_id=product_id,
-        product_title=product_result['title'],
+        product_title=product['title'],
         buttons=[
             create_btn(
                 endpoint_params=dict(
@@ -40,19 +39,19 @@ def product_resources(product_id):
 
 
 @bp.route('/<id>')
+@api.view(SOMISANAScope.RESOURCE_READ)
 def detail(id):
-    result = requests.get(f'http://localhost:2020/resource/{id}')
-    result = result.json()
+    resource = api.get(f'/resource/{id}')
 
     return render_template(
         'resource_detail.html',
-        resource=result,
+        resource=resource,
         buttons=[
             delete_btn(
                 object_id=id,
-                prompt_args=(result['reference'],),
+                prompt_args=(resource['reference'],),
                 endpoint_params=dict(
-                    product_id=result['product_id'],
+                    product_id=resource['product_id'],
                     resource_id=id
                 )
             )
@@ -61,6 +60,7 @@ def detail(id):
 
 
 @bp.route('/new/<product_id>/', methods=['GET', 'POST'])
+@api.view(SOMISANAScope.RESOURCE_ADMIN)
 def create(product_id):
     form = ResourceForm(request.form)
     form.file.data = request.files.get('file')
@@ -68,25 +68,20 @@ def create(product_id):
     if request.method == 'POST' and form.validate():
         try:
             if form.file.data:
-                response = requests.post(
-                    url='http://localhost:2020/resource/file/',
-                    data={
-                        'product_id': product_id,
-                        'resource_type': form.resource_type.data,
-                    },
+                new_resource_id = api.put_files(
+                    path=f'/resource/?product_id={product_id}&resource_type={form.resource_type.data}',
                     files={'file': (form.file.data.filename, form.file.data.stream)}
                 )
             else:
-                response = requests.post(
-                    url='http://localhost:2020/resource/',
-                    json={
+                new_resource_id = api.post(
+                    path='/resource/',
+                    data={
                         'product_id': product_id,
                         'reference': form.reference.data,
                         'resource_type': form.resource_type.data,
                     }
                 )
 
-            new_resource_id = response.json()
             flash(f'Resource {new_resource_id} has been created.', category='success')
             return redirect(url_for('.product_resources', product_id=product_id))
 
@@ -98,7 +93,8 @@ def create(product_id):
 
 
 @bp.route('<product_id>/<resource_id>/delete', methods=('POST',))
+@api.view(SOMISANAScope.RESOURCE_ADMIN)
 def delete(product_id, resource_id):
-    # requests.delete(f'http://localhost:2020/resource/{resource_id}')
+    api.delete(f'/resource/{resource_id}')
     flash(f'Resource {resource_id} has been deleted.', category='success')
     return redirect(url_for('.product_resources', product_id=product_id))

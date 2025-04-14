@@ -18,9 +18,25 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('simulation.index') }}">Simulation</a>
             </li>
-            {#            {{ login_nav_item( current_user ) }}#}
+            {{ login_nav_item( current_user ) }}
         </ul>
     </div>
+{% endmacro %}
+
+{% macro login_nav_item(
+    current_user
+) %}
+    {% if current_user %}
+        {% if current_user.is_authenticated %}
+            <li class="nav-item border-light" style="border-left: 1px solid"><a href="{{ url_for('hydra.logout') }}" class="nav-link">
+                Log out {{ current_user.email }}
+            </a></li>
+        {% else %}
+            <li class="nav-item border-light" style="border-left: 1px solid"><a href="{{ url_for('hydra.login') }}" class="nav-link">
+                Log in
+            </a></li>
+        {% endif %}
+    {% endif %}
 {% endmacro %}
 
 {% macro data_table(

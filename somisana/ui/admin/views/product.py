@@ -1,11 +1,11 @@
 from pathlib import Path
 
-import requests
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 from odp.lib.client import ODPAPIError
 from odp.ui.base import api
 from odp.ui.base.templates import delete_btn, edit_btn, create_btn
+from somisana.const import SOMISANAScope
 from somisana.ui.admin.forms import ProductForm
 
 bp = Blueprint(
@@ -17,9 +17,9 @@ bp = Blueprint(
 
 
 @bp.route('/')
+@api.view(SOMISANAScope.PRODUCT_READ)
 def index():
-    result = requests.get('http://localhost:2020/product/all_products')
-    all_products = result.json()
+    all_products = api.get('/product/all_products')
 
     return render_template(
         'product_index.html',
@@ -31,30 +31,31 @@ def index():
 
 
 @bp.route('/<id>')
+@api.view(SOMISANAScope.PRODUCT_READ)
 def detail(id):
-    result = requests.get(f'http://localhost:2020/product/{id}')
-    result = result.json()
+    product = api.get(f'/product/{id}')
 
     return render_template(
         'product_detail.html',
-        product=result,
+        product=product,
         buttons=[
             edit_btn(object_id=id),
-            delete_btn(object_id=id, prompt_args=(result['title'],))
+            delete_btn(object_id=id, prompt_args=(product['title'],))
         ]
     )
 
 
 @bp.route('/new', methods=('GET', 'POST'))
+@api.view(SOMISANAScope.PRODUCT_ADMIN)
 def create():
     form = ProductForm(request.form)
     populate_simulation_choices(form.simulations)
 
     if request.method == 'POST' and form.validate():
         try:
-            response = requests.post(
-                url='http://localhost:2020/product/',
-                json=dict(
+            new_product_id = api.post(
+                path='/product/',
+                data=dict(
                     title=form.title.data,
                     description=form.description.data,
                     doi=form.doi.data,
@@ -65,7 +66,6 @@ def create():
                     simulation_ids=[int(simulation_id) for simulation_id in form.simulations.data],
                 )
             )
-            new_product_id = response.json()
             flash(f'Product {new_product_id} has been created.', category='success')
             return redirect(url_for('.detail', id=new_product_id))
 
@@ -77,9 +77,9 @@ def create():
 
 
 @bp.route('/<id>/edit', methods=('GET', 'POST'))
+@api.view(SOMISANAScope.PRODUCT_ADMIN)
 def edit(id):
-    result = requests.get(f'http://localhost:2020/product/{id}')
-    product = result.json()
+    product = api.get(f'/product/{id}')
 
     # Change simulation objects into array of just id's for multichecklist
     product['simulations'] = [simulation['id'] for simulation in product['simulations']]
@@ -93,9 +93,9 @@ def edit(id):
 
     if request.method == 'POST' and form.validate():
         try:
-            requests.put(
-                url=f'http://localhost:2020/product/{id}',
-                json=dict(
+            api.put(
+                path=f'/product/{id}',
+                data=dict(
                     title=form.title.data,
                     description=form.description.data,
                     doi=form.doi.data,
@@ -117,14 +117,15 @@ def edit(id):
 
 
 @bp.route('/<id>/delete', methods=('POST',))
+@api.view(SOMISANAScope.PRODUCT_ADMIN)
 def delete(id):
-    requests.delete(f'http://localhost:2020/product/{id}')
+    api.delete(f'/product/{id}')
     flash(f'Product {id} has been deleted.', category='success')
     return redirect(url_for('.index'))
 
 
 def populate_simulation_choices(field):
-    simulations = requests.get('http://localhost:2020/simulation/all').json()
+    simulations = api.get('/simulation/all')
     field.choices = [
         (simulation['id'], simulation['title'])
         for simulation in simulations
