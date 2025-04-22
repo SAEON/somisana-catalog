@@ -1,12 +1,12 @@
 from pathlib import Path
-import requests
 
-from odp.ui.base.templates import delete_btn, edit_btn, create_btn
-from odp.lib.client import ODPAPIError
 from flask import Blueprint, flash, redirect, render_template, request, url_for
-from somisana.ui.admin.forms import SimulationForm
+
+from odp.lib.client import ODPAPIError
 from odp.ui.base import api
-from somisana.const import SOMISANAScope
+from odp.ui.base.templates import delete_btn, edit_btn, create_btn
+from somisana.const import SOMISANAScope, EntityType
+from somisana.ui.admin.forms import SimulationForm
 
 bp = Blueprint(
     'simulation',
@@ -38,6 +38,8 @@ def detail(id):
     return render_template(
         'simulation_detail.html',
         simulation=simulation,
+        entity_type=EntityType.SIMULATION.value,
+        cover_image=simulation['cover_image'],
         buttons=[
             edit_btn(object_id=id),
             delete_btn(object_id=id, prompt_args=(simulation['title'],))

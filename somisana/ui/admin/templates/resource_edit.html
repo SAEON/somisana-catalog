@@ -2,16 +2,22 @@
 {% from 'forms.j2' import render_form %}
 
 {% block web_title %}
-    SOMISANA - Product Resource
+    SOMISANA - {{ entity_type | title }} Resource
 {% endblock %}
 
 {% block heading %}
-    Resource Edit
+    {{ entity_type | title }} Resource
 {% endblock %}
 
 {% block content %}
-    {% set submit_target = url_for('.edit', id=resource.id) if resource else url_for('.create', product_id=product_id) %}
-    {% set cancel_target = url_for('.detail', id=resource.id) if resource else url_for('.product_resources', product_id=product_id) %}
+    {% set submit_target = url_for('.edit', id=resource.id) if resource else url_for('.create', entity_type=entity_type, entity_id=entity_id) %}
+
+    {% if entity_type == 'simulation' %}
+        {% set cancel_target = url_for('simulation.detail', id=entity_id) %}
+    {% else %}
+        {% set cancel_target = url_for('.detail', id=resource.id) if resource else url_for('.resources', entity_type=entity_type, entity_id=entity_id) %}
+    {% endif %}
+
     {{ render_form(
         form,
         obj=resource,

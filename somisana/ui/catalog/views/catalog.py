@@ -1,15 +1,16 @@
 from pathlib import Path
-import requests
 
-from flask import Blueprint, redirect, render_template, request, url_for
+from flask import Blueprint, render_template
+
+from odp.ui.base import api, cli
 
 bp = Blueprint('catalog', __name__, static_folder=Path(__file__).parent.parent / 'static')
 
 
 @bp.route('/')
+@cli.view()
+@api.user()
 def index():
-    result = requests.get('http://localhost:2020/product/all_products')
-    result = result.json()
+    products = cli.get('/product/all_products')
 
-    return result
-
+    return render_template('catalog.html', products=products)

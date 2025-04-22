@@ -1,5 +1,6 @@
 {% extends 'layout.html' %}
 {% from 'lib.j2' import bootswatch_spacelab_css, jquery_js, leaflet_js, leaflet_css %}
+{% from 'somisana_catalog.j2' import nav_bar_items %}
 
 {% block web_title %}
     SOMISANA
@@ -18,7 +19,7 @@
                 <span class="fw-semibold">SOMISANA</span>
                 <span class="">Sustainable Ocean Modelling Initiative: a South African approach</span>
             </div>
-{#            {{ nav_bar_items( current_user, marine_survey_types ) }}#}
+            {{ nav_bar_items( current_user ) }}
         </div>
     </nav>
 {% endblock %}

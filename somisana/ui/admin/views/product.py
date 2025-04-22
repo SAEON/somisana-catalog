@@ -5,7 +5,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from odp.lib.client import ODPAPIError
 from odp.ui.base import api
 from odp.ui.base.templates import delete_btn, edit_btn, create_btn
-from somisana.const import SOMISANAScope
+from somisana.const import SOMISANAScope, EntityType
 from somisana.ui.admin.forms import ProductForm
 
 bp = Blueprint(
@@ -38,6 +38,7 @@ def detail(id):
     return render_template(
         'product_detail.html',
         product=product,
+        entity_type=EntityType.PRODUCT.value,
         buttons=[
             edit_btn(object_id=id),
             delete_btn(object_id=id, prompt_args=(product['title'],))

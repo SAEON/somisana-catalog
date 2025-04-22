@@ -1,0 +1,57 @@
+{% macro nav_bar_items(
+    current_user
+) %}
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor04"
+            aria-controls="navbarColor04" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor04">
+        <ul class="navbar-nav" style="margin-left: auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('catalog.index') }}">Home</a>
+            </li>
+            {{ login_nav_item( current_user ) }}
+        </ul>
+    </div>
+{% endmacro %}
+
+{% macro login_nav_item(
+    current_user
+) %}
+    {% if current_user %}
+        {% if current_user.is_authenticated %}
+            <li class="nav-item border-light" style="border-left: 1px solid"><a href="{{ url_for('hydra.logout') }}"
+                                                                                class="nav-link">
+                Log out {{ current_user.email }}
+            </a></li>
+        {% else %}
+            <li class="nav-item border-light" style="border-left: 1px solid"><a href="{{ url_for('hydra.login') }}"
+                                                                                class="nav-link">
+                Log in
+            </a></li>
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+
+{% macro render_products(
+    products
+) %}
+    <div class="d-flex justify-content-between flex-wrap">
+        {% for product in products %}
+            {{ render_product(product) }}
+        {% endfor %}
+    </div>
+{% endmacro %}
+
+{% macro render_product(
+    product
+) %}
+    <div class="w-25 m-3">
+        <img class="w-100"
+             src="https://marine.copernicus.eu/sites/default/files/styles/news_slide/public/media/image/2025-04/20241203_BloomAustralia_A3_v2.png?itok=XNXyeL3t"/>
+        <div class="mt-2">
+            <a href="{{ url_for('product.index', id=product.id) }}"><h4>{{ product.title }}</h4></a>
+            <p>{{ product.description | truncate(100) }}</p>
+        </div>
+    </div>
+{% endmacro %}

@@ -5,7 +5,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from odp.lib.client import ODPAPIError
 from odp.ui.base import api
 from odp.ui.base.templates import delete_btn, create_btn
-from somisana.const import SOMISANAScope
+from somisana.const import SOMISANAScope, EntityType
 from somisana.ui.admin.forms import ResourceForm
 
 bp = Blueprint(
@@ -16,22 +16,26 @@ bp = Blueprint(
 )
 
 
-@bp.route('/product_resources/<product_id>/')
+@bp.route('/<entity_type>/<entity_id>/')
 @api.view(SOMISANAScope.RESOURCE_READ)
-def product_resources(product_id):
-    all_product_resources = api.get(f'/resource/product_resources/{product_id}')
+def resources(
+        entity_type: str,
+        entity_id: int
+):
+    all_resources = api.get(f'/{entity_type}/{entity_id}/resources')
 
-    product = api.get(f'/product/{product_id}')
+    entity = api.get(f'/{entity_type}/{entity_id}')
 
     return render_template(
         'resource_index.html',
-        resources=all_product_resources,
-        product_id=product_id,
-        product_title=product['title'],
+        resources=all_resources,
+        entity_id=entity_id,
+        entity_title=entity['title'],
         buttons=[
             create_btn(
                 endpoint_params=dict(
-                    product_id=product_id
+                    entity_type=entity_type,
+                    entity_id=entity_id
                 )
             )
         ]
@@ -51,7 +55,6 @@ def detail(id):
                 object_id=id,
                 prompt_args=(resource['reference'],),
                 endpoint_params=dict(
-                    product_id=resource['product_id'],
                     resource_id=id
                 )
             )
@@ -59,9 +62,12 @@ def detail(id):
     )
 
 
-@bp.route('/new/<product_id>/', methods=['GET', 'POST'])
+@bp.route('/new/<entity_type>/<entity_id>/', methods=['GET', 'POST'])
 @api.view(SOMISANAScope.RESOURCE_ADMIN)
-def create(product_id):
+def create(
+        entity_type: str,
+        entity_id: int
+):
     form = ResourceForm(request.form)
     form.file.data = request.files.get('file')
 
@@ -69,32 +75,39 @@ def create(product_id):
         try:
             if form.file.data:
                 new_resource_id = api.put_files(
-                    path=f'/resource/?product_id={product_id}&resource_type={form.resource_type.data}',
+                    path=f'/{entity_type}/{entity_id}/resource/?resource_type={form.resource_type.data}',
                     files={'file': (form.file.data.filename, form.file.data.stream)}
                 )
             else:
                 new_resource_id = api.post(
-                    path='/resource/',
+                    path=f'/{entity_type}/{entity_id}/resource/',
                     data={
-                        'product_id': product_id,
                         'reference': form.reference.data,
                         'resource_type': form.resource_type.data,
                     }
                 )
 
             flash(f'Resource {new_resource_id} has been created.', category='success')
-            return redirect(url_for('.product_resources', product_id=product_id))
+            return get_post_create_redirect(entity_type, entity_id)
 
         except ODPAPIError as e:
             if response := api.handle_error(e):
                 return response
 
-    return render_template('resource_edit.html', form=form, product_id=product_id)
+    return render_template('resource_edit.html', form=form, entity_type=entity_type, entity_id=entity_id)
 
 
-@bp.route('<product_id>/<resource_id>/delete', methods=('POST',))
+def get_post_create_redirect(entity_type: str, entity_id: int):
+    match entity_type:
+        case EntityType.SIMULATION:
+            return redirect(url_for('simulation.detail', id=entity_id))
+        case _:
+            return redirect(url_for('.resources', entity_type=entity_type, entity_id=entity_id))
+
+
+@bp.route('/<resource_id>/delete', methods=('POST',))
 @api.view(SOMISANAScope.RESOURCE_ADMIN)
-def delete(product_id, resource_id):
+def delete(resource_id):
     api.delete(f'/resource/{resource_id}')
     flash(f'Resource {resource_id} has been deleted.', category='success')
-    return redirect(url_for('.product_resources', product_id=product_id))
+    return redirect(url_for('home.index'))

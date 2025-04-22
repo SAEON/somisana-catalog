@@ -13,4 +13,4 @@ bp = Blueprint(
 
 @bp.route('/')
 def index():
-    return render_template('catalog.html')
+    return redirect(url_for('catalog.index'))
