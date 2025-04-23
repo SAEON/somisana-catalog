@@ -1,5 +1,5 @@
-from wtforms import FloatField, SelectField, StringField, URLField, FileField, TextAreaField
-from wtforms.validators import data_required, url, optional
+from wtforms import FloatField, SelectField, StringField, URLField, FileField, TextAreaField, ValidationError
+from wtforms.validators import data_required, url, optional, Regexp
 
 from odp.ui.base.forms import BaseForm
 from odp.ui.base.forms.fields import MultiCheckboxField
@@ -20,10 +20,7 @@ class ProductForm(BaseForm):
 class ResourceForm(BaseForm):
     reference = URLField("Resource URL", validators=[optional(), url()])
     file = FileField("Upload File", validators=[optional()])
-    resource_type = SelectField(
-        "Resource Type",
-        choices=[(type.value, type.name.replace('_', ' ').title()) for type in ResourceType]
-    )
+    resource_type = SelectField("Resource Type")
 
     def validate(self):
         if not super().validate():
@@ -51,3 +48,10 @@ class SimulationForm(BaseForm):
     title = StringField(label='Title', validators=[data_required()])
     folder_path = StringField(label='Folder Path', validators=[data_required()])
     data_access_url = StringField(label='Data Access URL', validators=[optional()])
+
+
+def image_and_gif_files_allowed(form, field):
+    if field.data:
+        filename = field.data.filename.lower()
+        if not filename.endswith(('.jpg', '.png', '.gif')):
+            raise ValidationError('Only .jpg, .png, or .gif files are allowed.')

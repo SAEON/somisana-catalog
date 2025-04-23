@@ -5,8 +5,8 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from odp.lib.client import ODPAPIError
 from odp.ui.base import api
 from odp.ui.base.templates import delete_btn, create_btn
-from somisana.const import SOMISANAScope, EntityType
-from somisana.ui.admin.forms import ResourceForm
+from somisana.const import SOMISANAScope, EntityType, ResourceType
+from somisana.ui.admin.forms import ResourceForm, image_and_gif_files_allowed
 
 bp = Blueprint(
     'resource',
@@ -69,7 +69,12 @@ def create(
         entity_id: int
 ):
     form = ResourceForm(request.form)
+    set_resource_type_choices(form.resource_type, entity_type)
     form.file.data = request.files.get('file')
+
+    if entity_type == EntityType.SIMULATION:
+        del form._fields['reference']
+        form.file.validators = [image_and_gif_files_allowed]
 
     if request.method == 'POST' and form.validate():
         try:
@@ -111,3 +116,12 @@ def delete(resource_id):
     api.delete(f'/resource/{resource_id}')
     flash(f'Resource {resource_id} has been deleted.', category='success')
     return redirect(url_for('home.index'))
+
+
+def set_resource_type_choices(resource_type_field, entity_type):
+    match entity_type:
+        case EntityType.SIMULATION:
+            resource_type_field.choices = [
+                (ResourceType.COVER_IMAGE.value, ResourceType.COVER_IMAGE.name.replace('_', ' ').title())]
+        case _:
+            resource_type_field.choices = [(type.value, type.name.replace('_', ' ').title()) for type in ResourceType]
