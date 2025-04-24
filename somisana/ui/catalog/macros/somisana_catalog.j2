@@ -34,24 +34,34 @@
 {% endmacro %}
 
 {% macro render_products(
-    products
+    products,
+    thumbnail_base_url
 ) %}
     <div class="d-flex justify-content-between flex-wrap">
         {% for product in products %}
-            {{ render_product(product) }}
+            {{ render_product(product, thumbnail_base_url) }}
         {% endfor %}
     </div>
 {% endmacro %}
 
 {% macro render_product(
-    product
+    product,
+    thumbnail_base_url
 ) %}
     <div class="w-25 m-3">
-        <img class="w-100"
-             src="https://marine.copernicus.eu/sites/default/files/styles/news_slide/public/media/image/2025-04/20241203_BloomAustralia_A3_v2.png?itok=XNXyeL3t"/>
+        {% set thumbnail_src = thumbnail_base_url ~ '/' ~ product.thumbnail.reference if product.thumbnail.reference_type == 'path' else product.thumbnail.reference %}
+        <img class="img-thumbnail" src="{{ thumbnail_src }}"
+             style="height: 80%; object-fit: cover"/>
         <div class="mt-2">
+
             <a href="{{ url_for('product.index', id=product.id) }}"><h4>{{ product.title }}</h4></a>
             <p>{{ product.description | truncate(100) }}</p>
         </div>
     </div>
+{% endmacro %}
+
+{% macro render_product_thumbnail(
+    product_resources
+) %}
+
 {% endmacro %}
