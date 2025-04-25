@@ -39,16 +39,16 @@
 ) %}
     <div class="d-flex justify-content-between flex-wrap">
         {% for product in products %}
-            {{ render_product(product, thumbnail_base_url) }}
+            {{ render_catalog_product(product, thumbnail_base_url) }}
         {% endfor %}
     </div>
 {% endmacro %}
 
-{% macro render_product(
+{% macro render_catalog_product(
     product,
     thumbnail_base_url
 ) %}
-    <div class="w-25 m-3">
+    <div class="w-25 p-3">
         {% set thumbnail_src = thumbnail_base_url ~ '/' ~ product.thumbnail.reference if product.thumbnail.reference_type == 'path' else product.thumbnail.reference %}
         <img class="img-thumbnail" src="{{ thumbnail_src }}"
              style="height: 80%; object-fit: cover"/>
@@ -60,8 +60,59 @@
     </div>
 {% endmacro %}
 
-{% macro render_product_thumbnail(
+{% macro render_product(
+    product,
+    local_resource_base_url
+) %}
+    <h1 class="mx-3 mb-5">{{ product.title }}</h1>
+    <div class="d-flex flex-row">
+        <div class="px-3" style="width: 20%">
+            {{ render_product_resources(product.resources) }}
+        </div>
+        <div class="px-3" style="width: 45%">
+            <h4>Overview</h4>
+            <hr>
+            <p>{{ product.description }}</p>
+
+            {% if product.doi %}
+                <p>
+                    <strong>DOI:</strong> <small>{{ product.doi }}</small>
+                </p>
+            {% endif %}
+        </div>
+        <div class="px-3" style="width: 35%">
+            {{ render_product_simulations(product.simulations, local_resource_base_url) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro render_product_resources(
     product_resources
 ) %}
+    <div class="card border-light mb-3" style="max-width: 20rem;">
+        <div class="card-header">Info</div>
+        <ul class="list-group list-group-flush">
+            {% for resource in product_resources %}
+                <li class="list-group-item">{{ resource.reference }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endmacro %}
 
+{% macro render_product_simulations(
+    simulations,
+    local_resource_base_url
+) %}
+    <div class="d-flex flex-column">
+        {% for simulation in simulations %}
+            <div class="p-2 mb-3">
+                <div class="d-flex justify-content-between">
+                    <h4>{{ simulation.title }}</h4>
+                    <a target="_blank" href="{{ simulation.data_access_url }}">Access Data</a>
+                </div>
+                {% set cover_img_src = local_resource_base_url ~ '/' ~ simulation.cover_image.reference if simulation.cover_image.reference_type == 'path' else simulation.cover_image.reference %}
+                <img class="img-thumbnail" src="{{ cover_img_src }}" style="height: 80%; object-fit: cover"/>
+            </div>
+        {% endfor %}
+    </div>
 {% endmacro %}

@@ -106,6 +106,6 @@ def edit(id):
 @bp.route('/<id>/delete', methods=('POST',))
 @api.view(SOMISANAScope.SIMULATION_ADMIN)
 def delete(id):
-    api.delete(f'/product/{id}')
-    flash(f'Product {id} has been deleted.', category='success')
+    api.delete(f'/simulation/{id}')
+    flash(f'Simulation {id} has been deleted.', category='success')
     return redirect(url_for('.index'))

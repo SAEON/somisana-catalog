@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'somisana_catalog.j2' import render_products %}
+{% from 'somisana_catalog.j2' import render_product %}
 
 {% block web_title %}
     SOMISANA - Product
@@ -7,10 +7,10 @@
 
 {% block main %}
     <main class="flex-grow-1 m-3">
-        <div class="container-xl m-auto" style="max-width: 60vw">
+        <div class="container-xl m-auto" style="max-width: 80vw">
             <div class="row mb-5">
                 <div class="bg-white-op rounded p-4">
-                    {{ product }}
+                    {{ render_product(product, local_resource_base_url) }}
                 </div>
             </div>
         </div>

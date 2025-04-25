@@ -11,7 +11,7 @@
 
 {% block content %}
     {% if product %}
-        <a href="{{ url_for('resource.product_resources', product_id=product.id) }}">Resources</a>
+        <a href="{{ url_for('resource.resources', entity_type=entity_type, entity_id=entity_id) }}">Resources</a>
     {% endif %}
     {{ render_form(form, product, ['simulations']) }}
 {% endblock %}
