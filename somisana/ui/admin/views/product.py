@@ -50,7 +50,6 @@ def detail(id):
 @api.view(SOMISANAScope.PRODUCT_ADMIN)
 def create():
     form = ProductForm(request.form)
-    populate_simulation_choices(form.simulations)
 
     if request.method == 'POST' and form.validate():
         try:
@@ -64,7 +63,13 @@ def create():
                     south_bound=float(form.south_bound.data),
                     east_bound=float(form.east_bound.data),
                     west_bound=float(form.west_bound.data),
-                    simulation_ids=[int(simulation_id) for simulation_id in form.simulations.data],
+                    horizontal_extent=float(form.horizontal_extent.data),
+                    horizontal_resolution=float(form.horizontal_resolution.data),
+                    vertical_extent=float(form.vertical_extent.data),
+                    vertical_resolution=float(form.vertical_resolution.data),
+                    temporal_extent=float(form.temporal_extent.data),
+                    temporal_resolution=float(form.temporal_resolution.data),
+                    variables=form.variables.data,
                 )
             )
             flash(f'Product {new_product_id} has been created.', category='success')
@@ -89,8 +94,6 @@ def edit(id):
         form = ProductForm(request.form)
     else:
         form = ProductForm(data=product)
-
-    populate_simulation_choices(form.simulations)
 
     if request.method == 'POST' and form.validate():
         try:
@@ -124,12 +127,5 @@ def delete(id):
     flash(f'Product {id} has been deleted.', category='success')
     return redirect(url_for('.index'))
 
-
-def populate_simulation_choices(field):
-    simulations = api.get('/simulation/all')
-    field.choices = [
-        (simulation['id'], simulation['title'])
-        for simulation in simulations
-    ]
 
 

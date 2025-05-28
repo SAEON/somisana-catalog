@@ -11,8 +11,12 @@
 {% endblock %}
 
 {% block content %}
-    {% call(prop) render_info(product, 'Tite', 'Description', 'DOI', 'North Bound', 'South Bound', 'East Bound',
-                            'West Bound', 'Simulations', 'Resources') %}
+    {% call(prop) render_info(
+        product, 'Tite', 'Description', 'DOI', 'North Bound', 'South Bound',
+        'East Bound', 'West Bound', 'Horizontal Extent', 'Horizontal Resolution',
+        'Vertical Extent', 'Vertical Resolution', 'Temporal Extent', 'Temporal Resolution',
+        'Variables', 'Datasets', 'Resources'
+        ) %}
         {% if prop == 'Tite' %}
             {{ product.title }}
         {% elif prop == 'Description' %}
@@ -27,8 +31,24 @@
             {{ product.east_bound }}
         {% elif prop == 'West Bound' %}
             {{ product.west_bound }}
-        {% elif prop == 'Simulations' %}
-            {{ product.simulations | sort(attribute='title') | map(attribute='title') | join('<br/>') | safe }}
+        {% elif prop == 'Horizontal Extent' %}
+            {{ product.horizontal_extent }}
+        {% elif prop == 'Horizontal Resolution' %}
+            {{ product.horizontal_resolution }}
+        {% elif prop == 'Vertical Extent' %}
+            {{ product.vertical_extent }}
+        {% elif prop == 'Vertical Resolution' %}
+            {{ product.vertical_resolution }}
+        {% elif prop == 'Temporal Extent' %}
+            {{ product.temporal_extent }}
+        {% elif prop == 'Temporal Resolution' %}
+            {{ product.temporal_resolution }}
+        {% elif prop == 'Variables' %}
+            {{ product.variables }}
+        {% elif prop == 'Datasets' %}
+            <a href="{{ url_for('dataset.product_datasets', product_id=product.id) }}">
+                View/Add Datasets
+            </a>
         {% elif prop == 'Resources' %}
             <a href="{{ url_for('resource.resources', entity_type=entity_type, entity_id=product.id) }}">
                 View/Add Resources

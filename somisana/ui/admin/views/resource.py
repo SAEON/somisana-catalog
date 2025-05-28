@@ -68,25 +68,23 @@ def create(
         entity_type: str,
         entity_id: int
 ):
+    resource_type = request.args.get('resource_type')
     form = ResourceForm(request.form)
-    set_resource_type_choices(form.resource_type, entity_type)
     form.file.data = request.files.get('file')
-
-    if entity_type == EntityType.SIMULATION:
-        del form._fields['reference']
-        form.file.validators = [image_and_gif_files_allowed]
+    set_form_options(form, resource_type)
 
     if request.method == 'POST' and form.validate():
         try:
             if form.file.data:
                 new_resource_id = api.put_files(
-                    path=f'/{entity_type}/{entity_id}/resource/?resource_type={form.resource_type.data}',
+                    path=f'/{entity_type}/{entity_id}/resource/?resource_type={form.resource_type.data}&title={form.title.data}',
                     files={'file': (form.file.data.filename, form.file.data.stream)}
                 )
             else:
                 new_resource_id = api.post(
                     path=f'/{entity_type}/{entity_id}/resource/',
                     data={
+                        'title': form.title.data,
                         'reference': form.reference.data,
                         'resource_type': form.resource_type.data,
                     }
@@ -104,8 +102,8 @@ def create(
 
 def get_post_create_redirect(entity_type: str, entity_id: int):
     match entity_type:
-        case EntityType.SIMULATION:
-            return redirect(url_for('simulation.detail', id=entity_id))
+        case EntityType.DATASET:
+            return redirect(url_for('dataset.detail', id=entity_id))
         case _:
             return redirect(url_for('.resources', entity_type=entity_type, entity_id=entity_id))
 
@@ -118,10 +116,16 @@ def delete(resource_id):
     return redirect(url_for('home.index'))
 
 
-def set_resource_type_choices(resource_type_field, entity_type):
-    match entity_type:
-        case EntityType.SIMULATION:
-            resource_type_field.choices = [
+def set_form_options(form, resource_type):
+    match resource_type:
+        case ResourceType.COVER_IMAGE:
+            del form._fields['reference']
+            form.file.validators = [image_and_gif_files_allowed]
+            form.resource_type.choices = [
                 (ResourceType.COVER_IMAGE.value, ResourceType.COVER_IMAGE.name.replace('_', ' ').title())]
+        case ResourceType.DATA_ACCESS_URL:
+            del form._fields['file']
+            form.resource_type.choices = [
+                (ResourceType.DATA_ACCESS_URL.value, ResourceType.DATA_ACCESS_URL.name.replace('_', ' ').title())]
         case _:
-            resource_type_field.choices = [(type.value, type.name.replace('_', ' ').title()) for type in ResourceType]
+            form.resource_type.choices = [(type.value, type.name.replace('_', ' ').title()) for type in ResourceType]

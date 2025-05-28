@@ -1,0 +1,24 @@
+{% extends 'admin.html' %}
+{% from 'forms.j2' import render_form %}
+
+{% block web_title %}
+    SOMISANA - Dataset Edit
+{% endblock %}
+
+{% block heading %}
+    Dataset Edit
+{% endblock %}
+
+{% block content %}
+    {% set submit_target = url_for('.edit', id=dataset.id) if dataset else url_for('.create', product_id=product_id) %}
+
+    {% set cancel_target = url_for('.product_datasets', product_id=product_id) %}
+
+    {{ render_form(
+        form,
+        obj=dataset,
+        submit_target=submit_target,
+        cancel_target=cancel_target
+    ) }}
+{% endblock %}
+

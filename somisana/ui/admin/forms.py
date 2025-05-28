@@ -1,4 +1,4 @@
-from wtforms import FloatField, SelectField, StringField, URLField, FileField, TextAreaField, ValidationError
+from wtforms import FloatField, SelectField, StringField, URLField, FileField, TextAreaField, ValidationError, FieldList
 from wtforms.validators import data_required, url, optional, Regexp
 
 from odp.ui.base.forms import BaseForm
@@ -14,10 +14,17 @@ class ProductForm(BaseForm):
     south_bound = FloatField(label='South Bound', validators=[data_required()])
     east_bound = FloatField(label='East Bound', validators=[data_required()])
     west_bound = FloatField(label='West Bound', validators=[data_required()])
-    simulations = MultiCheckboxField(label='Simulations')
+    horizontal_extent = FloatField(label='Horizontal Extent', validators=[])
+    horizontal_resolution = FloatField(label='Horizontal Resolution', validators=[])
+    vertical_extent = FloatField(label='Vertical Extent', validators=[])
+    vertical_resolution = FloatField(label='Vertical Resolution', validators=[])
+    temporal_extent = FloatField(label='Temporal Extent', validators=[])
+    temporal_resolution = FloatField(label='Temporal Resolution', validators=[])
+    variables = StringField(label='Variables', validators=[], description='comma separated')
 
 
 class ResourceForm(BaseForm):
+    title = StringField(label='Title', validators=[data_required()])
     reference = URLField("Resource URL", validators=[optional(), url()])
     file = FileField("Upload File", validators=[optional()])
     resource_type = SelectField("Resource Type")
@@ -48,6 +55,11 @@ class SimulationForm(BaseForm):
     title = StringField(label='Title', validators=[data_required()])
     folder_path = StringField(label='Folder Path', validators=[data_required()])
     data_access_url = StringField(label='Data Access URL', validators=[optional()])
+
+
+class DatasetForm(BaseForm):
+    title = StringField(label='Title', validators=[data_required()])
+    folder_path = StringField(label='Folder Path', validators=[data_required()])
 
 
 def image_and_gif_files_allowed(form, field):

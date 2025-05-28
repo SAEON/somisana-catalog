@@ -26,8 +26,8 @@ def create_app():
             SOMISANAScope.PRODUCT_READ,
             SOMISANAScope.RESOURCE_ADMIN,
             SOMISANAScope.RESOURCE_READ,
-            SOMISANAScope.SIMULATION_ADMIN,
-            SOMISANAScope.SIMULATION_READ,
+            SOMISANAScope.DATASET_READ,
+            SOMISANAScope.DATASET_ADMIN,
             ODPScope.TOKEN_READ
         ],
         SECRET_KEY=somisana_config.SOMISANA.ADMIN.FLASK_SECRET,

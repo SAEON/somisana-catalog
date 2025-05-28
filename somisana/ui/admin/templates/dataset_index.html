@@ -3,20 +3,19 @@
 {% from 'content.j2' import render_buttons %}
 
 {% block web_title %}
-    SOMISANA - Simulations
+    SOMISANA - Datasets
 {% endblock %}
 
 {% block heading %}
-    Simulations
+    Datasets {% if product_title %} for: {{ product_title }} {% endif %}
 {% endblock %}
 
 {% block content %}
     {{ data_table(
-        all_simulations,
+        datasets,
         {'id': 'ID',
         'title': 'Title',
-        'folder_path': 'Folder Path',
-        'data_access_url': 'Data Access URL'},
+        'folder_path': 'Folder Path'},
         url_key='id',
         url_param='id',
         url='.detail'

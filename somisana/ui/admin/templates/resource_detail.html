@@ -11,8 +11,10 @@
 {% endblock %}
 
 {% block content %}
-    {% call(prop) render_info(resource, 'URL', 'Resource Type', 'Reference Type') %}
-        {% if prop == 'URL' %}
+    {% call(prop) render_info(resource, 'Title', 'URL', 'Resource Type', 'Reference Type') %}
+        {% if prop == 'Title' %}
+            {{ resource.title }}
+        {% elif prop == 'URL' %}
             {{ resource.reference }}
         {% elif prop == 'Resource Type' %}
             {{ resource.resource_type }}

@@ -13,6 +13,14 @@
     {% if product %}
         <a href="{{ url_for('resource.resources', entity_type=entity_type, entity_id=entity_id) }}">Resources</a>
     {% endif %}
-    {{ render_form(form, product, ['simulations']) }}
+    {{ render_form(form, product, [
+        'horizontal_extent',
+        'horizontal_resolution',
+        'vertical_extent',
+        'vertical_resolution',
+        'temporal_extent',
+        'temporal_resolution',
+        'variables'
+    ]) }}
 {% endblock %}
 
