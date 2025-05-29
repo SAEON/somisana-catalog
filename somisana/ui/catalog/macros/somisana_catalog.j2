@@ -67,7 +67,7 @@
     <h1 class="mx-3 mb-5">{{ product.title }}</h1>
     <div class="d-flex flex-row">
         <div class="px-3" style="width: 20%">
-            {{ render_product_resources(product.resources) }}
+            {{ render_product_additional_info(product) }}
         </div>
         <div class="px-3" style="width: 45%">
             <h4>Overview</h4>
@@ -81,36 +81,49 @@
             {% endif %}
         </div>
         <div class="px-3" style="width: 35%">
-            {{ render_product_simulations(product.simulations, local_resource_base_url) }}
+            {{ render_product_datasets(product.datasets, local_resource_base_url) }}
         </div>
     </div>
 {% endmacro %}
 
-{% macro render_product_resources(
-    product_resources
+{% macro render_product_additional_info(
+    product
 ) %}
-    <div class="card border-light mb-3" style="max-width: 20rem;">
+    <div class="card mb-3" style="max-width: 20rem;">
         <div class="card-header">Info</div>
         <ul class="list-group list-group-flush">
-            {% for resource in product_resources %}
-                <li class="list-group-item">{{ resource.reference }}</li>
-            {% endfor %}
+            <li class="list-group-item">
+                {% for resource in product.resources if resource.resource_type == 'document' %}
+                    <a href="{{ resource.reference }}">{{ resource.title }}</a>
+                {% endfor %}
+            </li>
+            <li class="list-group-item">
+                Horizontal Extent: {{ product.horizontal_extent }}<br>
+                Horizontal Resolution: {{ product.horizontal_resolution }}<br>
+                Vertical Extent: {{ product.vertical_extent }}<br>
+                Vertical Resolution: {{ product.vertical_resolution }}<br>
+                Temporal Extent: {{ product.temporal_extent }}<br>
+                Temporal Resolution: {{ product.temporal_resolution }}<br>
+                Variables: {{ product.variables }}
+            </li>
         </ul>
     </div>
 {% endmacro %}
 
-{% macro render_product_simulations(
-    simulations,
+{% macro render_product_datasets(
+    datasets,
     local_resource_base_url
 ) %}
     <div class="d-flex flex-column">
-        {% for simulation in simulations %}
+        {% for dataset in datasets %}
             <div class="p-2 mb-3">
                 <div class="d-flex justify-content-between">
-                    <h4>{{ simulation.title }}</h4>
-                    <a target="_blank" href="{{ simulation.data_access_url }}">Access Data</a>
+                    <h4>{{ dataset.title }}</h4>
+                    {% for data_access_url in dataset.data_access_urls %}
+                        <a target="_blank" href="{{ data_access_url.reference }}">{{ data_access_url.title }}</a>
+                    {% endfor %}
                 </div>
-                {% set cover_img_src = local_resource_base_url ~ '/' ~ simulation.cover_image.reference if simulation.cover_image.reference_type == 'path' else simulation.cover_image.reference %}
+                {% set cover_img_src = local_resource_base_url ~ '/' ~ dataset.cover_image.reference if dataset.cover_image.reference_type == 'path' else dataset.cover_image.reference %}
                 <img class="img-thumbnail" src="{{ cover_img_src }}" style="height: 80%; object-fit: cover"/>
             </div>
         {% endfor %}

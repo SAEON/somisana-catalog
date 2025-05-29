@@ -24,7 +24,7 @@ def create_app():
             HydraScope.OFFLINE_ACCESS,
             SOMISANAScope.PRODUCT_READ,
             SOMISANAScope.RESOURCE_READ,
-            SOMISANAScope.SIMULATION_READ,
+            SOMISANAScope.DATASET_READ,
             ODPScope.TOKEN_READ
         ],
         CI_CLIENT_ID=somisana_config.SOMISANA.CATALOG.CI_CLIENT_ID,
@@ -32,7 +32,7 @@ def create_app():
         CI_CLIENT_SCOPE=[
             SOMISANAScope.PRODUCT_READ,
             SOMISANAScope.RESOURCE_READ,
-            SOMISANAScope.SIMULATION_READ,
+            SOMISANAScope.DATASET_READ,
         ],
         SECRET_KEY=somisana_config.SOMISANA.CATALOG.FLASK_SECRET,
         CATALOG_TERMS_OF_USE='''
