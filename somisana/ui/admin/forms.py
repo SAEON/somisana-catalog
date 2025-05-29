@@ -51,12 +51,6 @@ class ResourceForm(BaseForm):
         return True
 
 
-class SimulationForm(BaseForm):
-    title = StringField(label='Title', validators=[data_required()])
-    folder_path = StringField(label='Folder Path', validators=[data_required()])
-    data_access_url = StringField(label='Data Access URL', validators=[optional()])
-
-
 class DatasetForm(BaseForm):
     title = StringField(label='Title', validators=[data_required()])
     folder_path = StringField(label='Folder Path', validators=[data_required()])

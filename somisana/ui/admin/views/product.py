@@ -87,9 +87,6 @@ def create():
 def edit(id):
     product = api.get(f'/product/{id}')
 
-    # Change simulation objects into array of just id's for multichecklist
-    product['simulations'] = [simulation['id'] for simulation in product['simulations']]
-
     if request.method == 'POST':
         form = ProductForm(request.form)
     else:
@@ -107,7 +104,13 @@ def edit(id):
                     south_bound=float(form.south_bound.data),
                     east_bound=float(form.east_bound.data),
                     west_bound=float(form.west_bound.data),
-                    simulation_ids=[int(simulation_id) for simulation_id in form.simulations.data],
+                    horizontal_extent=float(form.horizontal_extent.data),
+                    horizontal_resolution=float(form.horizontal_resolution.data),
+                    vertical_extent=float(form.vertical_extent.data),
+                    vertical_resolution=float(form.vertical_resolution.data),
+                    temporal_extent=float(form.temporal_extent.data),
+                    temporal_resolution=float(form.temporal_resolution.data),
+                    variables=form.variables.data,
                 )
             )
             flash(f'Product {id} has been updated.', category='success')

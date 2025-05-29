@@ -12,11 +12,7 @@
 {% block content %}
     {% set submit_target = url_for('.edit', id=resource.id) if resource else url_for('.create', entity_type=entity_type, entity_id=entity_id) %}
 
-    {% if entity_type == 'simulation' %}
-        {% set cancel_target = url_for('simulation.detail', id=entity_id) %}
-    {% else %}
-        {% set cancel_target = url_for('.detail', id=resource.id) if resource else url_for('.resources', entity_type=entity_type, entity_id=entity_id) %}
-    {% endif %}
+    {% set cancel_target = url_for('.detail', id=resource.id) if resource else url_for('.resources', entity_type=entity_type, entity_id=entity_id) %}
 
     {{ render_form(
         form,
