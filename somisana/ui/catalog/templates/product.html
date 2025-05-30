@@ -17,3 +17,13 @@
     </main>
 {% endblock %}
 
+{% block scripts %}
+    {{ super() }}
+
+    {% set N, E, S, W = product.north_bound, product.east_bound, product.south_bound, product.west_bound %}
+    {% if N is not none and E is not none and S is not none and W is not none %}
+        <script>
+            createExtentMap({{ N }}, {{ E }}, {{ S }}, {{ W }});
+        </script>
+    {% endif %}
+{% endblock %}

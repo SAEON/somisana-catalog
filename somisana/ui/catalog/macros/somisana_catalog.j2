@@ -50,8 +50,10 @@
 ) %}
     <div class="w-25 p-3">
         {% set thumbnail_src = thumbnail_base_url ~ '/' ~ product.thumbnail.reference if product.thumbnail.reference_type == 'path' else product.thumbnail.reference %}
-        <img class="img-thumbnail" src="{{ thumbnail_src }}"
-             style="height: 80%; object-fit: cover"/>
+        <a href="{{ url_for('product.index', id=product.id) }}">
+            <img class="img-thumbnail" src="{{ thumbnail_src }}"
+                 style="height: 80%; object-fit: cover"/>
+        </a>
         <div class="mt-2">
 
             <a href="{{ url_for('product.index', id=product.id) }}"><h4>{{ product.title }}</h4></a>
@@ -74,11 +76,7 @@
             <hr>
             <p>{{ product.description }}</p>
 
-            {% if product.doi %}
-                <p>
-                    <strong>DOI:</strong> <small>{{ product.doi }}</small>
-                </p>
-            {% endif %}
+            <div id="map" class="my-5"></div>
         </div>
         <div class="px-3" style="width: 35%">
             {{ render_product_datasets(product.datasets, local_resource_base_url) }}
@@ -110,6 +108,12 @@
                 <strong>Temporal Resolution:</strong> {{ product.temporal_resolution }}<br>
                 <strong>Variables:</strong> {{ product.variables }}
             </li>
+            {% if product.doi %}
+                <li class="list-group-item">
+                    <h5>DOI</h5>
+                    {{ product.doi }}
+                </li>
+            {% endif %}
         </ul>
     </div>
 {% endmacro %}
