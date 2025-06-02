@@ -10,7 +10,18 @@
         <div class="container-xl m-auto" style="max-width: 80vw">
             <div class="row mb-5">
                 <div class="bg-white-op rounded p-4">
+                    {% if superseded_by_product %}
+                        <div class="alert alert-dismissible alert-warning">
+                          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                          <h4 class="alert-heading">Note!</h4>
+                          <p class="mb-0">This project is superseded by <a href="{{ url_for('.index', id=superseded_by_product.id) }}" class="alert-link">{{ superseded_by_product.title }}</a>.</p>
+                        </div>
+                    {% endif %}
                     {{ render_product(product, local_resource_base_url) }}
+                    {% if superseded_product %}
+                        <h5>Supersedes:</h5>
+                        <a href="{{ url_for('.index', id=superseded_product.id) }}">{{ superseded_product.title }}</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

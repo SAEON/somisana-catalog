@@ -15,7 +15,7 @@
         product, 'Tite', 'Description', 'DOI', 'North Bound', 'South Bound',
         'East Bound', 'West Bound', 'Horizontal Extent', 'Horizontal Resolution',
         'Vertical Extent', 'Vertical Resolution', 'Temporal Extent', 'Temporal Resolution',
-        'Variables', 'Datasets', 'Resources'
+        'Variables', 'Supersedes', 'Superseded By', 'Datasets', 'Resources'
         ) %}
         {% if prop == 'Tite' %}
             {{ product.title }}
@@ -45,6 +45,18 @@
             {{ product.temporal_resolution }}
         {% elif prop == 'Variables' %}
             {{ product.variables }}
+        {% elif prop == 'Supersedes' %}
+            {% if product.superseded_product_id %}
+                <a href="{{ url_for('.detail', id=product.superseded_product_id) }}">
+                    {{ product.superseded_product_id }}
+                </a>
+            {% endif %}
+        {% elif prop == 'Superseded By' %}
+            {% if product.superseded_by_product_id %}
+                <a href="{{ url_for('.detail', id=product.superseded_by_product_id) }}">
+                    {{ product.superseded_by_product_id }}
+                </a>
+            {% endif %}
         {% elif prop == 'Datasets' %}
             <a href="{{ url_for('dataset.product_datasets', product_id=product.id) }}">
                 View/Add Datasets
