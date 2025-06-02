@@ -51,6 +51,13 @@ def detail(id):
 def create():
     form = ProductForm(request.form)
 
+    all_products = api.get(f'/product/all_products')
+
+    form.superseded_product_id.choices = [
+        (str(product['id']), product['title']) for product in all_products
+    ]
+    form.superseded_product_id.choices.insert(0, (0, 'None'))
+
     if request.method == 'POST' and form.validate():
         try:
             new_product_id = api.post(
@@ -70,6 +77,7 @@ def create():
                     temporal_extent=float(form.temporal_extent.data),
                     temporal_resolution=float(form.temporal_resolution.data),
                     variables=form.variables.data,
+                    superseded_product_id=form.projects_superseded.data,
                 )
             )
             flash(f'Product {new_product_id} has been created.', category='success')
@@ -87,10 +95,19 @@ def create():
 def edit(id):
     product = api.get(f'/product/{id}')
 
+    all_products = api.get(f'/product/all_products')
+
     if request.method == 'POST':
         form = ProductForm(request.form)
     else:
         form = ProductForm(data=product)
+
+    form.superseded_product_id.choices = [
+        (str(product['id']), product['title'])
+        for product in all_products
+        if product['id'] != int(id)
+    ]
+    form.superseded_product_id.choices.insert(0, (0, 'None'))
 
     if request.method == 'POST' and form.validate():
         try:
@@ -111,6 +128,7 @@ def edit(id):
                     temporal_extent=float(form.temporal_extent.data),
                     temporal_resolution=float(form.temporal_resolution.data),
                     variables=form.variables.data,
+                    superseded_product_id=form.superseded_product_id.data,
                 )
             )
             flash(f'Product {id} has been updated.', category='success')
@@ -129,6 +147,3 @@ def delete(id):
     api.delete(f'/product/{id}')
     flash(f'Product {id} has been deleted.', category='success')
     return redirect(url_for('.index'))
-
-
-

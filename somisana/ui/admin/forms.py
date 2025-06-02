@@ -1,9 +1,8 @@
-from wtforms import FloatField, SelectField, StringField, URLField, FileField, TextAreaField, ValidationError, FieldList
-from wtforms.validators import data_required, url, optional, Regexp
+from wtforms import FloatField, SelectField, StringField, URLField, FileField, TextAreaField, ValidationError, \
+    RadioField
+from wtforms.validators import data_required, url, optional
 
 from odp.ui.base.forms import BaseForm
-from odp.ui.base.forms.fields import MultiCheckboxField
-from somisana.const import ResourceType
 
 
 class ProductForm(BaseForm):
@@ -14,13 +13,15 @@ class ProductForm(BaseForm):
     south_bound = FloatField(label='South Bound', validators=[data_required()])
     east_bound = FloatField(label='East Bound', validators=[data_required()])
     west_bound = FloatField(label='West Bound', validators=[data_required()])
-    horizontal_extent = FloatField(label='Horizontal Extent', validators=[])
-    horizontal_resolution = FloatField(label='Horizontal Resolution', validators=[])
-    vertical_extent = FloatField(label='Vertical Extent', validators=[])
-    vertical_resolution = FloatField(label='Vertical Resolution', validators=[])
-    temporal_extent = FloatField(label='Temporal Extent', validators=[])
-    temporal_resolution = FloatField(label='Temporal Resolution', validators=[])
-    variables = StringField(label='Variables', validators=[], description='comma separated')
+    horizontal_extent = FloatField(label='Horizontal Extent', validators=[optional()])
+    horizontal_resolution = FloatField(label='Horizontal Resolution', validators=[optional()])
+    vertical_extent = FloatField(label='Vertical Extent', validators=[optional()])
+    vertical_resolution = FloatField(label='Vertical Resolution', validators=[optional()])
+    temporal_extent = FloatField(label='Temporal Extent', validators=[optional()])
+    temporal_resolution = FloatField(label='Temporal Resolution', validators=[optional()])
+    variables = StringField(label='Variables', validators=[optional()], description='comma separated')
+    superseded_product_id = RadioField(label='Supersedes', validators=[optional()],
+                                       description='Product superseded by this one')
 
 
 class ResourceForm(BaseForm):
