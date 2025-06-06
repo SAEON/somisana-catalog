@@ -19,7 +19,7 @@
                     {% endif %}
                     {{ render_product(product, local_resource_base_url) }}
                     {% if superseded_product %}
-                        <h5>Supersedes:</h5>
+                        <h6>Supersedes:</h6>
                         <a href="{{ url_for('.index', id=superseded_product.id) }}">{{ superseded_product.title }}</a>
                     {% endif %}
                 </div>

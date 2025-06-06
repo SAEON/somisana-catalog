@@ -13,7 +13,7 @@
 {% block content %}
     {% call(prop) render_info(
         product, 'Tite', 'Description', 'DOI', 'North Bound', 'South Bound',
-        'East Bound', 'West Bound', 'Horizontal Extent', 'Horizontal Resolution',
+        'East Bound', 'West Bound', 'Horizontal Resolution',
         'Vertical Extent', 'Vertical Resolution', 'Temporal Extent', 'Temporal Resolution',
         'Variables', 'Supersedes', 'Superseded By', 'Datasets', 'Resources'
         ) %}
@@ -31,8 +31,6 @@
             {{ product.east_bound }}
         {% elif prop == 'West Bound' %}
             {{ product.west_bound }}
-        {% elif prop == 'Horizontal Extent' %}
-            {{ product.horizontal_extent }}
         {% elif prop == 'Horizontal Resolution' %}
             {{ product.horizontal_resolution }}
         {% elif prop == 'Vertical Extent' %}
