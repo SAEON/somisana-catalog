@@ -49,13 +49,14 @@
     thumbnail_base_url
 ) %}
     <div class="w-25 p-3">
-        {% set thumbnail_src = thumbnail_base_url ~ '/' ~ product.thumbnail.reference if product.thumbnail.reference_type == 'path' else product.thumbnail.reference %}
-        <a href="{{ url_for('product.index', id=product.id) }}">
-            <img class="img-thumbnail" src="{{ thumbnail_src }}"
-                 style="height: 80%; object-fit: cover"/>
-        </a>
+        {% if product.thumbnail %}
+            {% set thumbnail_src = thumbnail_base_url ~ '/' ~ product.thumbnail.reference if product.thumbnail.reference_type == 'path' else product.thumbnail.reference %}
+            <a href="{{ url_for('product.index', id=product.id) }}">
+                <img class="img-thumbnail" src="{{ thumbnail_src }}"
+                     style="height: 80%; object-fit: cover"/>
+            </a>
+        {% endif %}
         <div class="mt-2">
-
             <a href="{{ url_for('product.index', id=product.id) }}"><h4>{{ product.title }}</h4></a>
             <p>{{ product.description | truncate(100) }}</p>
         </div>
@@ -87,34 +88,69 @@
 {% macro render_product_additional_info(
     product
 ) %}
-    <div class="card mb-3" style="max-width: 20rem;">
-        <div class="card-header">
-            <h5>Info</h5>
+    {% set documents = product.resources | selectattr('resource_type', 'equalto', 'document') | list %}
+
+    {% set any_details =
+            ( product.horizontal_resolution or
+            product.vertical_extent or
+            product.vertical_resolution or
+            product.temporal_extent or
+            product.temporal_resolution or
+            product.variables ) %}
+
+    {% if any_details or documents or product.doi %}
+        <div class="card mb-3" style="max-width: 20rem;">
+            <div class="card-header">
+                <h5>Info</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% set documents = product.resources | selectattr('resource_type', 'equalto', 'document') | list %}
+                {% if documents %}
+                    <li class="list-group-item">
+                        <h5>Resources</h5>
+                        {% for document in documents %}
+                            📄 <a href="{{ document.reference }}">{{ document.title }}</a><br>
+                        {% endfor %}
+                    </li>
+                {% endif %}
+                {% if any_details %}
+                    <li class="list-group-item">
+                        <h5>Details</h5>
+                        {% if product.horizontal_resolution %}
+                            <strong>Horizontal Resolution: </strong>
+                            {{ product.horizontal_resolution }}<br>
+                        {% endif %}
+                        {% if product.vertical_extent %}
+                            <strong>Vertical Extent: </strong>
+                            {{ product.vertical_extent }}<br>
+                        {% endif %}
+                        {% if product.vertical_resolution %}
+                            <strong>Vertical Resolution: </strong>
+                            {{ product.vertical_resolution }}<br>
+                        {% endif %}
+                        {% if product.temporal_extent %}
+                            <strong>Temporal Extent: </strong>
+                            {{ product.temporal_extent }}<br>
+                        {% endif %}
+                        {% if product.temporal_resolution %}
+                            <strong>Temporal Resolution: </strong>
+                            {{ product.temporal_resolution }}<br>
+                        {% endif %}
+                        {% if product.variables %}
+                            <strong>Variables: </strong>
+                            {{ product.variables }}
+                        {% endif %}
+                    </li>
+                {% endif %}
+                {% if product.doi %}
+                    <li class="list-group-item">
+                        <h5>DOI</h5>
+                        {{ product.doi }}
+                    </li>
+                {% endif %}
+            </ul>
         </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-                <h5>Documents</h5>
-                {% for resource in product.resources if resource.resource_type == 'document' %}
-                    📄 <a href="{{ resource.reference }}">{{ resource.title }}</a><br>
-                {% endfor %}
-            </li>
-            <li class="list-group-item">
-                <h5>Details</h5>
-                <strong>Horizontal Resolution:</strong> {{ product.horizontal_resolution }}<br>
-                <strong>Vertical Extent:</strong> {{ product.vertical_extent }}<br>
-                <strong>Vertical Resolution:</strong> {{ product.vertical_resolution }}<br>
-                <strong>Temporal Extent:</strong> {{ product.temporal_extent }}<br>
-                <strong>Temporal Resolution:</strong> {{ product.temporal_resolution }}<br>
-                <strong>Variables:</strong> {{ product.variables }}
-            </li>
-            {% if product.doi %}
-                <li class="list-group-item">
-                    <h5>DOI</h5>
-                    {{ product.doi }}
-                </li>
-            {% endif %}
-        </ul>
-    </div>
+    {% endif %}
 {% endmacro %}
 
 {% macro render_product_datasets(
@@ -127,8 +163,10 @@
                 <div class="d-flex justify-content-between">
                     <h4>{{ dataset.title }}</h4>
                 </div>
-                {% set cover_img_src = local_resource_base_url ~ '/' ~ dataset.cover_image.reference if dataset.cover_image.reference_type == 'path' else dataset.cover_image.reference %}
-                <img class="img-thumbnail" src="{{ cover_img_src }}" style="height: 80%; object-fit: cover"/>
+                {% if dataset.cover_image %}
+                    {% set cover_img_src = local_resource_base_url ~ '/' ~ dataset.cover_image.reference if dataset.cover_image.reference_type == 'path' else dataset.cover_image.reference %}
+                    <img class="img-thumbnail" src="{{ cover_img_src }}" style="height: 80%; object-fit: cover"/>
+                {% endif %}
                 <h6>Data Access:</h6>
                 {% for data_access_url in dataset.data_access_urls %}
                     <a target="_blank" href="{{ data_access_url.reference }}">{{ data_access_url.title }}</a><br>
