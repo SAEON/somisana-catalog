@@ -89,7 +89,6 @@ def create(
 def edit(id):
     dataset = api.get(f'/dataset/{id}')
 
-    # separate get/post form instantiation to resolve
     if request.method == 'POST':
         form = DatasetForm(request.form)
     else:
@@ -111,7 +110,7 @@ def edit(id):
             if response := api.handle_error(e):
                 return response
 
-    return render_template('dataset_edit.html', dataset=dataset, form=form)
+    return render_template('dataset_edit.html', dataset=dataset, product_id=dataset['product_id'], form=form)
 
 
 @bp.route('/<id>/delete', methods=('POST',))
