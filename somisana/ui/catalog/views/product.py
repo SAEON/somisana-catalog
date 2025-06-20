@@ -17,11 +17,11 @@ def index(id):
 
     superseded_by_product = {}
     if product['superseded_by_product_id']:
-        superseded_by_product = cli.get(f'/product/{product['superseded_by_product_id']}')
+        superseded_by_product = cli.get(f"/product/{product['superseded_by_product_id']}")
 
     superseded_product = {}
     if product['superseded_product_id']:
-        superseded_product = cli.get(f'/product/{product['superseded_product_id']}')
+        superseded_product = cli.get(f"/product/{product['superseded_product_id']}")
 
     return render_template(
         'product.html',
