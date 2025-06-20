@@ -61,8 +61,6 @@
             --bs-border-radius: 0.2em;
         }
     </style>
-
-    <link rel="stylesheet" href="{{ url_for('.static', filename='styles/surveys.css') }}">
 {% endblock %}
 
 {% block scripts %}
@@ -71,6 +69,5 @@
     {{ leaflet_js() }}
     <script src="{{ url_for('static', filename='scripts/catalog.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/controls.js') }}"></script>
-    <script src="{{ url_for('.static', filename='scripts/surveys.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/leaflet-providers.js') }}"></script>
 {% endblock %}
