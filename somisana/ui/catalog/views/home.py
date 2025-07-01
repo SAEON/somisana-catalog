@@ -1,5 +1,4 @@
 from pathlib import Path
-import requests
 
 from flask import Blueprint, redirect, render_template, request, url_for
 
