@@ -11,11 +11,15 @@
 {% endblock %}
 
 {% block content %}
-    {% call(prop) render_info(dataset, 'Tite', 'Folder Path', 'Data Access Link(s)', 'Cover Image') %}
+    {% call(prop) render_info(dataset, 'Tite', 'Folder Path', 'Identifier', 'Type','Data Access Link(s)', 'Cover Image') %}
         {% if prop == 'Tite' %}
             {{ dataset.title }}
         {% elif prop == 'Folder Path' %}
             {{ dataset.folder_path }}
+        {% elif prop == 'Identifier' %}
+            {{ dataset.identifier }}
+        {% elif prop == 'Type' %}
+            {{ dataset.type }}
         {% elif prop == 'Data Access Link(s)' %}
             {% for data_access_url in data_access_urls %}
                 {{ data_access_url.title }}

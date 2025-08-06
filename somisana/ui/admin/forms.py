@@ -4,6 +4,8 @@ from wtforms.validators import data_required, url, optional
 
 from odp.ui.base.forms import BaseForm
 
+from somisana.const import DatasetType
+
 
 class ProductForm(BaseForm):
     title = StringField(label='Title', validators=[data_required()])
@@ -54,6 +56,11 @@ class ResourceForm(BaseForm):
 class DatasetForm(BaseForm):
     title = StringField(label='Title', validators=[data_required()])
     folder_path = StringField(label='Folder Path', validators=[data_required()])
+    identifier = StringField(label='Identifier', validators=[data_required()],
+                              description='Unique identifier used by the ingester')
+    type = SelectField(label='Type', validators=[data_required()],
+                       choices=[(dataset_type.value, dataset_type.name) for dataset_type in DatasetType],
+                       description='Tells the ingester what type of data is bing ingested')
 
 
 def image_and_gif_files_allowed(form, field):

@@ -71,7 +71,9 @@ def create(
                 data=dict(
                     product_id=product_id,
                     title=form.title.data,
-                    folder_path=form.folder_path.data
+                    folder_path=form.folder_path.data,
+                    type=form.type.data,
+                    identifier=form.identifier.data,
                 )
             )
             flash(f'Dataset {new_dataset_id} has been created.', category='success')
@@ -99,8 +101,11 @@ def edit(id):
             api.put(
                 path=f'/dataset/{id}',
                 data=dict(
+                    product_id=dataset['product_id'],
                     title=form.title.data,
                     folder_path=form.folder_path.data,
+                    type=form.type.data,
+                    identifier=form.identifier.data,
                 )
             )
             flash(f'Dataset {id} has been updated.', category='success')
