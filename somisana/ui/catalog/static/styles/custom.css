@@ -4,17 +4,15 @@
     color: black;
 }
 
-.saeon-color {
-    background: #5986C6;
-}
-
 .social-link {
     color: white;
 }
 
 .footer-heading {
+    color: white;
+    text-decoration: none;
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .footer-list {

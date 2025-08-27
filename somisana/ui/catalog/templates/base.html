@@ -24,7 +24,8 @@
             <div class="d-flex justify-content-between">
                 <div style="max-width: 600px" class="p-4">
                     <h2 style="color: white; font-weight: bold">SOMISANA Data Products</h2>
-                    <p style="color: white; font-weight: 550; font-size: small">Developed as part of the National Oceans
+                    <p style="color: white; font-weight: 550; font-size: small; margin: unset;">Developed as part of the
+                        National Oceans
                         and
                         Coastal Information System (OCIMS),
                         funded by the Department of Forestry, Fisheries and the Environment.</p>
@@ -40,75 +41,21 @@
 {% endblock %}
 
 {% block footer %}
-    <footer class="text-white saeon-color">
-        <div class="container pt-5" style="max-width: 1000px">
-            <div class="row">
-                <div class="col footer-column">
-                    <p class="footer-heading">Site Usage</p>
-                    <ul class="footer-list">
-                        <li><a href="https://saeon.ac.za/disclaimer/" target="_blank">Disclaimer</a></li>
-                        <li><a href="https://saeon.ac.za/conditions-of-use/" target="_blank">Conditions of Use</a></li>
-                        <li><a href="https://saeon.ac.za/privacy-policy/" target="_blank">Privacy Policy</a></li>
-                    </ul>
+    <footer class="text-white" style="background-color: #074988">
+        <div class="container py-4">
+            <div class="row justify-content-between">
+                <div class="col-5 d-flex justify-content-around">
+                    <img src="{{ url_for('.static', filename='/images/saeon-logo.png') }}" height="60">
+                    <img src="{{ url_for('.static', filename='/images/dffe-logo.png') }}" height="60">
                 </div>
-                <div class="col footer-column">
-                    <p class="footer-heading">Open Data Portal</p>
-                    <ul class="footer-list">
-                        <li><a href="https://catalogue.saeon.ac.za?referrer=SAEON" target="_blank">Search Data</a></li>
-                        <li><a href="https://saeon.ac.za/data-curation/" target="_blank">Submit Data</a></li>
-                        <li><a href="https://saeon.ac.za/weather-stations/" target="_blank">Weather Stations</a></li>
-                        <li><a href="https://ulwazi.saeon.ac.za/" target="_blank">uLwazi Node</a></li>
-                        <li><a href="https://repository.saeon.ac.za/index.php/s/nscR6iaHcy4LYds" target="_blank">SAEON
-                            Data Policy</a></li>
-                    </ul>
-                </div>
-                <div class="col footer-column">
-                    <p class="footer-heading">Research</p>
-                    <ul class="footer-list">
-                        <li><a href="https://saeon.ac.za/nodes/" target="_blank">Nodes</a></li>
-                        <li><a href="https://saeon.ac.za/infrastructures/" target="_blank">Infrastructures</a></li>
-                        <li><a href="https://efteon.saeon.ac.za" target="_blank">EFTEON</a></li>
-                        <li><a href="https://smcri.saeon.ac.za/" target="_blank">SMCRI</a></li>
-                        <li><a href="https://saeon.ac.za/wp-content/uploads/2022/01/SAPRI_proposal_SARIR.pdf"
-                               target="_blank">SAPRI</a></li>
-                        <li><a href="https://saeon.ac.za/publications/" target="_blank">Publications</a></li>
-                        <li><a href="https://saeon.ac.za/resources/" target="_blank">Resources</a></li>
-                    </ul>
-                </div>
-                <div class="col footer-column">
-                    <p class="footer-heading">Nodes</p>
-                    <ul class="footer-list">
-                        <li><a href="https://arid.saeon.ac.za/" target="_blank">Arid Lands</a></li>
-                        <li><a href="https://egagasini.saeon.ac.za/" target="_blank">Egagasini</a></li>
-                        <li><a href="https://elwandle.saeon.ac.za/" target="_blank">Elwandle</a></li>
-                        <li><a href="https://fynbos.saeon.ac.za/" target="_blank">Fynbos</a></li>
-                        <li><a href="https://grasslands.saeon.ac.za/" target="_blank">Grasslands</a></li>
-                        <li><a href="https://ndlovu.saeon.ac.za/" target="_blank">Ndlovu</a></li>
-                        <li><a href="https://ulwazi.saeon.ac.za/" target="_blank">uLwazi Node</a></li>
-                    </ul>
-                </div>
-                <div class="col footer-column">
-                    <p class="footer-heading">Outreach</p>
-                    <ul class="footer-list">
-                        <li><a href="https://education.saeon.ac.za/contact/" target="_blank">SAEON Education</a></li>
-                        <li><a href="https://gsn.saeon.ac.za" target="_blank">Graduate Student Network</a></li>
-                    </ul>
-                </div>
-                <div class="col footer-column">
-                    <p class="footer-heading">About</p>
-                    <ul class="footer-list">
-                        <li><a href="https://saeon.ac.za/contact-us/" target="_blank">Contact</a></li>
-                        <li><a href="https://saeon.ac.za/national-office/" target="_blank">National Office</a></li>
-                        <li><a href="https://enews.saeon.ac.za/" target="_blank">News</a></li>
-                        <li><a href="https://saeon.ac.za/careers/" target="_blank">Careers</a></li>
-                        <li><a href="https://saeon.ac.za/supply-chain-management/" target="_blank">Tenders</a></li>
-                        <li><a href="https://saeon.ac.za/wp-content/uploads/2021/02/SAEON-Strategy-2030-final-JP.pdf"
-                               target="_blank">SAEON Strategy</a></li>
-                        <li><a href="https://servicedesk.saeon.ac.za/" target="_blank">Service Desk</a></li>
-                    </ul>
+                <div class="col-6 d-flex justify-content-between align-items-center">
+                    <a class="footer-heading" href="https://somisana.ac.za/#about-us" target="_blank">About</a>
+                    <a class="footer-heading" href="https://somisana.ac.za/#people" target="_blank">People</a>
+                    <a class="footer-heading" href="https://somisana.ac.za/#news" target="_blank">News</a>
+                    <a class="footer-heading" href="https://somisana.ac.za/#contact" target="_blank">Contact</a>
                 </div>
             </div>
-            <div class="row justify-content-center py-4">
+            <div class="row justify-content-center py-4" style="display: none">
                 <div class="col-1">
                     <a href="mailto:enquiries@saeon.ac.za" class="social-link">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
@@ -146,7 +93,6 @@
                         </svg>
                     </a>
                 </div>
-
             </div>
         </div>
     </footer>
