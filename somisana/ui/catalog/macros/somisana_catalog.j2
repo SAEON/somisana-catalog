@@ -39,7 +39,7 @@
     products,
     thumbnail_base_url
 ) %}
-    <div class="d-flex justify-content-between flex-wrap">
+    <div class="d-flex justify-content-around flex-wrap">
         {% for product in products %}
             {{ render_catalog_product(product, thumbnail_base_url) }}
         {% endfor %}
