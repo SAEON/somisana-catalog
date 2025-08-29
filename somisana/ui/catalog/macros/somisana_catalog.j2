@@ -69,19 +69,18 @@
     product,
     local_resource_base_url
 ) %}
-    <h1 class="mx-3 mb-5">{{ product.title }}</h1>
     <div class="d-flex flex-row">
-        <div class="px-3" style="width: 20%">
+        <div class="px-3" style="width: 23%">
             {{ render_product_additional_info(product) }}
         </div>
         <div class="px-3" style="width: 45%">
-            <h4>Overview</h4>
+            <h3 style="font-weight: 500">{{ product.title }}</h3>
             <hr>
             <p>{{ product.description }}</p>
 
             <div id="map" class="my-5"></div>
         </div>
-        <div class="px-3" style="width: 35%">
+        <div class="px-3" style="width: 32%">
             {{ render_product_datasets(product.datasets, local_resource_base_url) }}
         </div>
     </div>
@@ -101,7 +100,7 @@
             product.variables ) %}
 
     {% if any_details or documents or product.doi %}
-        <div class="card mb-3" style="max-width: 20rem;">
+        <div class="card mb-3" style="width: 100%;">
             <div class="card-header">
                 <h5>Info</h5>
             </div>
