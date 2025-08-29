@@ -14,6 +14,17 @@
 
     {% set cancel_target = url_for('.product_datasets', product_id=product_id) %}
 
+    <div class="alert alert-dismissible alert-info">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>Note!</strong>
+        The Folder Path is used by the ingester to fetch the model file.
+        <br>
+        Where there are dates in the file path use the syntax: &lt;YYYYMMDD&gt; in whichever permutation is required.
+        YYYY will be replaced by the current year, MM with the current month and DD with the current day.
+        <br>
+        The root of the path should be the highest level where all model files of the same type are stored.
+    </div>
+
     {{ render_form(
         form,
         obj=dataset,

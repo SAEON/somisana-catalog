@@ -57,10 +57,10 @@ class DatasetForm(BaseForm):
     title = StringField(label='Title', validators=[data_required()])
     folder_path = StringField(label='Folder Path', validators=[data_required()])
     identifier = StringField(label='Identifier', validators=[data_required()],
-                              description='Unique identifier used by the ingester')
+                             description='Unique identifier used by the ingester')
     type = SelectField(label='Type', validators=[data_required()],
                        choices=[(dataset_type.value, dataset_type.name) for dataset_type in DatasetType],
-                       description='Tells the ingester what type of data is bing ingested')
+                       description='Tells the ingester what type of data is being ingested')
 
 
 def image_and_gif_files_allowed(form, field):
