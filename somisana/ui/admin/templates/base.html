@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 {% from 'lib.j2' import bootswatch_spacelab_css, jquery_js, leaflet_js, leaflet_css %}
-{% from 'admin.j2' import nav_bar_items %}
+{% from 'admin.j2' import nav_bar_items, summernote_css, summernote_js %}
 
 {% block web_title %}
     SOMISANA
@@ -26,7 +26,7 @@
         <div style="background-color: #5986C6">
             <div class="d-flex flex-row-reverse py-4">
                 <div class="d-flex justify-content-center" style="width: 400px">
-                        SOMISANA: {{ config.SOMISANA_VERSION }}
+                    SOMISANA: {{ config.SOMISANA_VERSION }}
                 </div>
             </div>
         </div>
@@ -37,6 +37,7 @@
     {{ super() }}
     {{ bootswatch_spacelab_css() }}
     {{ leaflet_css() }}
+    {{ summernote_css() }}
     <style>
         :root {
             --bs-link-color: #3E8A93;
@@ -50,7 +51,19 @@
     {{ super() }}
     {{ jquery_js() }}
     {{ leaflet_js() }}
+    {{ summernote_js() }}
     <script src="{{ url_for('static', filename='scripts/catalog.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/controls.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/leaflet-providers.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('textarea').summernote({
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ]
+            });
+        });
+    </script>
 {% endblock %}
