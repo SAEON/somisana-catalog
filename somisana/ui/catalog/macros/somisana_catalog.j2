@@ -146,7 +146,7 @@
                 {% if product.doi %}
                     <li class="list-group-item">
                         <h5>DOI</h5>
-                        {{ product.doi }}
+                        <a href="https://doi.org/{{ product.doi }}" target="_blank">{{ product.doi }}</a>
                     </li>
                 {% endif %}
             </ul>

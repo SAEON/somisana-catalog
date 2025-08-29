@@ -10,9 +10,6 @@
 {% endblock %}
 
 {% block content %}
-    {% if product %}
-        <a href="{{ url_for('resource.resources', entity_type=entity_type, entity_id=entity_id) }}">Resources</a>
-    {% endif %}
     {{ render_form(form, product, [
         'description',
         'horizontal_resolution',

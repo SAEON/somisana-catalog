@@ -10,7 +10,8 @@ from somisana.const import DatasetType
 class ProductForm(BaseForm):
     title = StringField(label='Title', validators=[data_required()])
     description = TextAreaField(label='Description', validators=[data_required()])
-    doi = StringField(label='DOI')
+    doi = StringField(label='DOI', description="Don't include 'https://doi.org/.' Please only include the actual DOI. "
+                                               "the remainder of the URL will be added on the catalog.")
     north_bound = FloatField(label='North Bound', validators=[data_required()])
     south_bound = FloatField(label='South Bound', validators=[data_required()])
     east_bound = FloatField(label='East Bound', validators=[data_required()])
