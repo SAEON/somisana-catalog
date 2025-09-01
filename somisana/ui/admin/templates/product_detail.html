@@ -20,7 +20,7 @@
         {% if prop == 'Tite' %}
             {{ product.title }}
         {% elif prop == 'Description' %}
-            {{ product.description }}
+            {{ product.description | safe }}
         {% elif prop == 'DOI' %}
             {{ product.doi }}
         {% elif prop == 'North Bound' %}
