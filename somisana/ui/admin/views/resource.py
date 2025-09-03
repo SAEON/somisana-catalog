@@ -112,7 +112,9 @@ def edit(
         form = ResourceForm(request.form)
         form.file.data = request.files.get('file')
 
-        if resource['reference_type'] == 'path':
+        if resource['reference_type'] == 'path' and form.file.data:
+            form.reference.data = None
+        elif resource['reference_type'] == 'path':
             form.reference.data = resource['reference']
 
         resource_type = request.args.get('resource_type')
