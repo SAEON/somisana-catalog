@@ -158,20 +158,76 @@
     datasets,
     local_resource_base_url
 ) %}
-    <div class="d-flex flex-column">
+    <div class="accordion" id="accordionDatasets">
         {% for dataset in datasets %}
-            <div class="p-2 mb-3">
-                <div class="d-flex justify-content-between">
-                    <h4>{{ dataset.title }}</h4>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading_{{ dataset.id }}">
+                    <button class="accordion-button {% if not loop.first %}collapsed{% endif %}" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#dataset_{{ dataset.id }}"
+                            aria-expanded="{{ 'true' if loop.first else 'false' }}"
+                            aria-controls="dataset_{{ dataset.id }}">
+                        {{ dataset.title }}
+                    </button>
+                </h2>
+                <div id="dataset_{{ dataset.id }}"
+                     class="accordion-collapse collapse {% if loop.first %}show{% endif %}"
+                     aria-labelledby="heading_{{ dataset.id }}"
+                     data-bs-parent="#accordionDatasets">
+                    <div class="accordion-body">
+                        <div id="carousel_{{ dataset.id }}" class="carousel slide">
+                            <div class="carousel-indicators">
+                                {% for _ in dataset.cover_images %}
+                                    <button type="button"
+                                            data-bs-target="#carousel_{{ dataset.id }}"
+                                            data-bs-slide-to="{{ loop.index0 }}"
+                                            {% if loop.first %} class="active" aria-current="true"{% endif %}
+                                            aria-label="Slide {{ loop.index }}"></button>
+                                {% endfor %}
+                            </div>
+                            <div class="carousel-inner">
+                                {% for cover_image in dataset.cover_images %}
+                                    <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                        {% set cover_img_src = local_resource_base_url ~ '/' ~ cover_image.reference if cover_image.reference_type == 'path' else cover_image.reference %}
+                                        <div class="my-2" style="margin-left: 5%">
+                                            {{ cover_image.title }}
+                                        </div>
+                                        {% if cover_image.resource_type == 'cover_clip' %}
+                                            <div class="carousel-img-container p-3">
+                                                <video src="{{ cover_img_src }}" controls style="max-width: 100%"></video>
+                                            </div>
+                                        {% else %}
+                                            <div class="carousel-img-container p-3">
+                                                <img class="img-thumbnail" src="{{ cover_img_src }}"
+                                                     style="max-width: 100% !important; object-fit: cover"/>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <button class="carousel-control-prev" type="button"
+                                    data-bs-target="#carousel_{{ dataset.id }}"
+                                    data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button"
+                                    data-bs-target="#carousel_{{ dataset.id }}"
+                                    data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                        <div class="m-2">
+                            <h6>Data Access:</h6>
+                            {% for data_access_url in dataset.data_access_urls %}
+                                <a target="_blank"
+                                   href="{{ data_access_url.reference }}">{{ data_access_url.title }}</a>
+                                <br>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
-                {% if dataset.cover_image %}
-                    {% set cover_img_src = local_resource_base_url ~ '/' ~ dataset.cover_image.reference if dataset.cover_image.reference_type == 'path' else dataset.cover_image.reference %}
-                    <img class="img-thumbnail" src="{{ cover_img_src }}" style="height: 80%; object-fit: cover"/>
-                {% endif %}
-                <h6>Data Access:</h6>
-                {% for data_access_url in dataset.data_access_urls %}
-                    <a target="_blank" href="{{ data_access_url.reference }}">{{ data_access_url.title }}</a><br>
-                {% endfor %}
             </div>
         {% endfor %}
     </div>

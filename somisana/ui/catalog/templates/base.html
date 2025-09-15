@@ -1,5 +1,5 @@
 {% extends 'layout.html' %}
-{% from 'lib.j2' import bootsrap_css, bootswatch_spacelab_css, jquery_js, leaflet_js, leaflet_css %}
+{% from 'lib.j2' import bootsrap_css, bootswatch_spacelab_css, jquery_js, leaflet_js, leaflet_css, bootstrap_js %}
 {% from 'somisana_catalog.j2' import nav_bar_items %}
 
 {% block web_title %}
@@ -117,6 +117,7 @@
     {{ super() }}
     {{ jquery_js() }}
     {{ leaflet_js() }}
+    {{ bootstrap_js() }}
     <script src="{{ url_for('static', filename='scripts/catalog.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/controls.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/leaflet-providers.js') }}"></script>
