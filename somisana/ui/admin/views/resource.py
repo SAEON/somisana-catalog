@@ -174,13 +174,14 @@ def delete(resource_id):
 def set_form_options(form, resource_type):
     match resource_type:
         case ResourceType.COVER_IMAGE:
-            del form._fields['reference']
-            form.file.validators = [image_and_gif_files_allowed]
             form.resource_type.choices = [
-                (ResourceType.COVER_IMAGE.value, ResourceType.COVER_IMAGE.name.replace('_', ' ').title())]
+                (ResourceType.COVER_IMAGE.value, ResourceType.COVER_IMAGE.name.replace('_', ' ').title()),
+                (ResourceType.COVER_CLIP.value, ResourceType.COVER_CLIP.name.replace('_', ' ').title()),
+            ]
         case ResourceType.DATA_ACCESS_URL:
             del form._fields['file']
             form.resource_type.choices = [
                 (ResourceType.DATA_ACCESS_URL.value, ResourceType.DATA_ACCESS_URL.name.replace('_', ' ').title())]
         case _:
-            form.resource_type.choices = [(type.value, type.name.replace('_', ' ').title()) for type in ResourceType]
+            form.resource_type.choices = [(type.value, type.name.replace('_', ' ').title()) for type in ResourceType if
+                                          type.value not in [ResourceType.COVER_IMAGE, ResourceType.COVER_CLIP]]

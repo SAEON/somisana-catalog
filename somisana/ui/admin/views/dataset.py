@@ -48,7 +48,7 @@ def detail(id):
         'dataset_detail.html',
         dataset=dataset,
         entity_type=EntityType.DATASET.value,
-        cover_image=dataset['cover_image'],
+        cover_images=dataset['cover_images'],
         data_access_urls=dataset['data_access_urls'],
         buttons=[
             edit_btn(object_id=id),

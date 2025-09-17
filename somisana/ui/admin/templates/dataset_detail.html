@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block content %}
-    {% call(prop) render_info(dataset, 'Tite', 'Folder Path', 'Identifier', 'Type','Data Access Link(s)', 'Cover Image') %}
+    {% call(prop) render_info(dataset, 'Tite', 'Folder Path', 'Identifier', 'Type','Data Access Link(s)', 'Cover Image(s)') %}
         {% if prop == 'Tite' %}
             {{ dataset.title }}
         {% elif prop == 'Folder Path' %}
@@ -31,16 +31,17 @@
             <a href="{{ url_for('resource.create', entity_type=entity_type, entity_id=dataset.id) }}?resource_type=data_access_url">
                 Add Data Access Link
             </a>
-        {% elif prop == 'Cover Image' %}
-            {% if cover_image %}
-                <a href="{{ url_for('resource.detail', id=cover_image.id) }}">
-                    View/Edit Cover Image
-                </a>
-            {% else %}
-                <a href="{{ url_for('resource.create', entity_type=entity_type, entity_id=dataset.id) }}?resource_type=cover_image">
-                    Add Cover Image
-                </a>
-            {% endif %}
+        {% elif prop == 'Cover Image(s)' %}
+            {% for cover_image in cover_images %}
+                {{ cover_image.title }}
+                (<a href="{{ url_for('resource.detail', id=cover_image.id) }}">
+                    View/Edit
+                </a>)
+                <br>
+            {% endfor %}
+            <a href="{{ url_for('resource.create', entity_type=entity_type, entity_id=dataset.id) }}?resource_type=cover_image">
+                Add Cover Image
+            </a>
         {% endif %}
     {% endcall %}
     {{ render_buttons(buttons) }}
