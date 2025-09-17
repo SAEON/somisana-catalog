@@ -17,7 +17,7 @@
                           <p class="mb-0">This project is superseded by <a href="{{ url_for('.index', id=superseded_by_product.id) }}" class="alert-link">{{ superseded_by_product.title }}</a>.</p>
                         </div>
                     {% endif %}
-                    {{ render_product(product, local_resource_base_url) }}
+                    {{ render_product(product, local_resource_base_url, visualisations_base_url) }}
                     {% if superseded_product %}
                         <h6>Supersedes:</h6>
                         <a href="{{ url_for('.index', id=superseded_product.id) }}">{{ superseded_product.title }}</a>

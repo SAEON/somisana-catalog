@@ -121,4 +121,9 @@
     <script src="{{ url_for('static', filename='scripts/catalog.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/controls.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/leaflet-providers.js') }}"></script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
 {% endblock %}

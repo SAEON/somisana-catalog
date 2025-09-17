@@ -1,5 +1,5 @@
 from wtforms import FloatField, SelectField, StringField, URLField, FileField, TextAreaField, ValidationError, \
-    RadioField
+    RadioField, BooleanField
 from wtforms.validators import data_required, url, optional
 
 from odp.ui.base.forms import BaseForm
@@ -56,12 +56,26 @@ class ResourceForm(BaseForm):
 
 class DatasetForm(BaseForm):
     title = StringField(label='Title', validators=[data_required()])
-    folder_path = StringField(label='Folder Path', validators=[data_required()])
+    folder_path = StringField(label='Folder Path')
     identifier = StringField(label='Identifier', validators=[data_required()],
                              description='Unique identifier used by the ingester')
     type = SelectField(label='Type', validators=[data_required()],
                        choices=[(dataset_type.value, dataset_type.name) for dataset_type in DatasetType],
                        description='Tells the ingester what type of data is being ingested')
+    visualize = BooleanField(label='Visualize',
+                             description='Check this field if you want the dataset to be ingested and visualized. '
+                                         'The folder path needs to be filled out if you check this.')
+
+    def validate(self):
+        if not super().validate():
+            return False
+
+        if self.visualize.data and not self.folder_path.data:
+            msg = "This is required if visualize is checked."
+            self.folder_path.errors.append(msg)
+            return False
+
+        return True
 
 
 def image_and_gif_files_allowed(form, field):

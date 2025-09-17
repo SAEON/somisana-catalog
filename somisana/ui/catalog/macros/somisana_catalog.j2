@@ -67,7 +67,8 @@
 
 {% macro render_product(
     product,
-    local_resource_base_url
+    local_resource_base_url,
+    visualisations_base_url
 ) %}
     <div class="d-flex flex-row">
         <div class="px-3" style="width: 23%">
@@ -81,7 +82,7 @@
             <div id="map" class="my-5"></div>
         </div>
         <div class="px-3" style="width: 32%">
-            {{ render_product_datasets(product.datasets, local_resource_base_url) }}
+            {{ render_product_datasets(product.datasets, local_resource_base_url, visualisations_base_url) }}
         </div>
     </div>
 {% endmacro %}
@@ -156,7 +157,8 @@
 
 {% macro render_product_datasets(
     datasets,
-    local_resource_base_url
+    local_resource_base_url,
+    visualisations_base_url
 ) %}
     <div class="accordion" id="accordionDatasets">
         {% for dataset in datasets %}
@@ -194,7 +196,8 @@
                                         </div>
                                         {% if cover_image.resource_type == 'cover_clip' %}
                                             <div class="carousel-img-container p-3">
-                                                <video src="{{ cover_img_src }}" controls style="max-width: 100%"></video>
+                                                <video src="{{ cover_img_src }}" controls
+                                                       style="max-width: 100%"></video>
                                             </div>
                                         {% else %}
                                             <div class="carousel-img-container p-3">
@@ -218,13 +221,24 @@
                                 <span class="visually-hidden">Next</span>
                             </button>
                         </div>
-                        <div class="m-2">
-                            <h6>Data Access:</h6>
-                            {% for data_access_url in dataset.data_access_urls %}
-                                <a target="_blank"
-                                   href="{{ data_access_url.reference }}">{{ data_access_url.title }}</a>
-                                <br>
-                            {% endfor %}
+                        <div class="m-2 d-flex justify-content-between">
+                            <div>
+                                <h6>Data Access:</h6>
+                                {% for data_access_url in dataset.data_access_urls %}
+                                    <a target="_blank"
+                                       href="{{ data_access_url.reference }}">{{ data_access_url.title }}</a>
+                                    <br>
+                                {% endfor %}
+                            </div>
+                            {% if dataset.visualize %}
+                                <div class="p-4">
+                                    <a href="{{ visualisations_base_url }}?dataset_id={{ dataset.identifier }}"
+                                       target="_blank"
+                                       data-toggle="tooltip" title="Go to visualisations">
+                                        Interactive Visualisations
+                                    </a>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

@@ -72,6 +72,7 @@ def create(
                     product_id=product_id,
                     title=form.title.data,
                     folder_path=form.folder_path.data,
+                    visualize=form.visualize.data,
                     type=form.type.data,
                     identifier=form.identifier.data,
                 )
@@ -104,6 +105,7 @@ def edit(id):
                     product_id=dataset['product_id'],
                     title=form.title.data,
                     folder_path=form.folder_path.data,
+                    visualize=form.visualize.data,
                     type=form.type.data,
                     identifier=form.identifier.data,
                 )

@@ -30,5 +30,6 @@ def index(id):
         product=product,
         superseded_by_product=superseded_by_product,
         superseded_product=superseded_product,
-        local_resource_base_url=local_resource_base_url
+        local_resource_base_url=local_resource_base_url,
+        visualisations_base_url=somisana_config.SOMISANA.VISUALISATIONS_EXTERNAL_URL
     )

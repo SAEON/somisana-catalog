@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block content %}
-    {% call(prop) render_info(dataset, 'Tite', 'Folder Path', 'Identifier', 'Type','Data Access Link(s)', 'Cover Image(s)') %}
+    {% call(prop) render_info(dataset, 'Tite', 'Folder Path', 'Identifier', 'Type', 'Visualize', 'Data Access Link(s)', 'Cover Image(s)') %}
         {% if prop == 'Tite' %}
             {{ dataset.title }}
         {% elif prop == 'Folder Path' %}
@@ -20,6 +20,8 @@
             {{ dataset.identifier }}
         {% elif prop == 'Type' %}
             {{ dataset.type }}
+        {% elif prop == 'Visualize' %}
+            {{ dataset.visualize }}
         {% elif prop == 'Data Access Link(s)' %}
             {% for data_access_url in data_access_urls %}
                 {{ data_access_url.title }}
