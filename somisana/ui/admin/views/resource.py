@@ -69,8 +69,13 @@ def create(
         entity_type: str,
         entity_id: int
 ):
-    resource_type = request.args.get('resource_type')
     form = ResourceForm(request.form)
+
+    if request.method == 'GET':
+        resource_type = request.args.get('resource_type')
+    else:
+        resource_type = form.resource_type.data
+
     form.file.data = request.files.get('file')
     set_form_options(form, resource_type)
 
