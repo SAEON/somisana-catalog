@@ -188,7 +188,7 @@
                                 {% endfor %}
                             </div>
                             <div class="carousel-inner">
-                                {% for cover_image in dataset.cover_images %}
+                                {% for cover_image in dataset.cover_images | sort(attribute='title') %}
                                     <div class="carousel-item {% if loop.first %}active{% endif %}">
                                         {% set cover_img_src = local_resource_base_url ~ '/' ~ cover_image.reference if cover_image.reference_type == 'path' else cover_image.reference %}
                                         <div class="my-2" style="margin-left: 5%">

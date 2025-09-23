@@ -5,7 +5,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from odp.lib.client import ODPAPIError
 from odp.ui.base import api
 from odp.ui.base.templates import delete_btn, create_btn, edit_btn
-from somisana.const import SOMISANAScope, EntityType, ResourceType
+from somisana.const import SOMISANAScope, EntityType, ResourceType, ResourceReferenceType
 from somisana.ui.admin.forms import ResourceForm, image_and_gif_files_allowed
 
 bp = Blueprint(
@@ -112,12 +112,12 @@ def edit(
         form = ResourceForm(request.form)
         form.file.data = request.files.get('file')
 
-        if resource['reference_type'] == 'path' and form.file.data:
+        if resource['reference_type'] == ResourceReferenceType.PATH.value and form.file.data:
             form.reference.data = None
-        elif resource['reference_type'] == 'path':
+        elif resource['reference_type'] == ResourceReferenceType.LINK.value:
             form.reference.data = resource['reference']
 
-        resource_type = request.args.get('resource_type')
+        resource_type = form.resource_type.data
     else:
         form = ResourceForm(data=resource)
 
@@ -173,7 +173,7 @@ def delete(resource_id):
 
 def set_form_options(form, resource_type):
     match resource_type:
-        case ResourceType.COVER_IMAGE:
+        case ResourceType.COVER_IMAGE | ResourceType.COVER_CLIP:
             form.resource_type.choices = [
                 (ResourceType.COVER_IMAGE.value, ResourceType.COVER_IMAGE.name.replace('_', ' ').title()),
                 (ResourceType.COVER_CLIP.value, ResourceType.COVER_CLIP.name.replace('_', ' ').title()),
