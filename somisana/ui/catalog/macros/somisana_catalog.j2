@@ -39,7 +39,7 @@
     products,
     thumbnail_base_url
 ) %}
-    <div class="d-flex justify-content-around flex-wrap">
+    <div class="d-flex flex-wrap">
         {% for product in products %}
             {{ render_catalog_product(product, thumbnail_base_url) }}
         {% endfor %}
@@ -55,7 +55,7 @@
             {% set thumbnail_src = thumbnail_base_url ~ '/' ~ product.thumbnail.reference if product.thumbnail.reference_type == 'path' else product.thumbnail.reference %}
             <a href="{{ url_for('product.index', id=product.id) }}">
                 <img class="img-thumbnail" src="{{ thumbnail_src }}"
-                     style="height: 80%; object-fit: cover"/>
+                     style="height: 70%; object-fit: cover"/>
             </a>
         {% endif %}
         <div class="mt-2">
