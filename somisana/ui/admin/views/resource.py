@@ -119,16 +119,15 @@ def edit(
 
         if resource['reference_type'] == ResourceReferenceType.PATH.value and form.file.data:
             form.reference.data = None
-        elif resource['reference_type'] == ResourceReferenceType.LINK.value:
-            form.reference.data = resource['reference']
 
         resource_type = form.resource_type.data
     else:
         form = ResourceForm(data=resource)
 
-        if resource['reference_type'] == 'path':
+        if resource['reference_type'] == ResourceReferenceType.PATH.value:
             form.reference.render_kw = {'disabled': 'disabled'}
-            form.file.data = {'filename': resource['reference']}
+        elif resource['reference_type'] == ResourceReferenceType.LINK.value:
+            form.file.render_kw = {'disabled': 'disabled'}
 
         resource_type = resource['resource_type']
 
