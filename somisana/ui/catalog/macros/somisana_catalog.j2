@@ -84,7 +84,7 @@
             {{ render_product_additional_info(product) }}
         </div>
         <div class="px-3 product-datasets order-md-3">
-            {{ render_product_datasets(product.datasets, local_resource_base_url, visualisations_base_url) }}
+            {{ render_product_datasets(product, local_resource_base_url, visualisations_base_url) }}
         </div>
     </div>
 {% endmacro %}
@@ -158,10 +158,11 @@
 {% endmacro %}
 
 {% macro render_product_datasets(
-    datasets,
+    product,
     local_resource_base_url,
     visualisations_base_url
 ) %}
+    {% set datasets = product.datasets %}
     <div class="accordion" id="accordionDatasets">
         {% for dataset in datasets %}
             <div class="accordion-item">
@@ -234,7 +235,7 @@
                             </div>
                             {% if dataset.visualize %}
                                 <div class="p-4">
-                                    <a href="{{ visualisations_base_url }}?dataset_id={{ dataset.identifier }}"
+                                    <a href="{{ visualisations_base_url }}?dataset_id={{ dataset.identifier }}&product_title={{ product.title }}"
                                        target="_blank"
                                        data-toggle="tooltip" title="Go to visualisations">
                                         Interactive Visualisations
